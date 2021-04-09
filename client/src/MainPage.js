@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -9,6 +9,7 @@ import {
   Paper,
   Toolbar,
   Typography,
+  TextField,
 } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/core';
@@ -23,32 +24,76 @@ const useStyles = makeStyles({
   },
   button: {
     margin: 2,
+    width: 100,
+    height: '4vh',
   },
-  topPaper: {},
+  myForm: {
+    height: '4vh',
+    display: 'flex',
+  },
 });
 
 export default function MainPage() {
   const classes = useStyles();
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    return;
+  };
+
   return (
     <Container className={classes.container}>
       <CssBaseline />
       <Box
         style={{
-          minHeight: '10vh',
-          display: 'block',
-          background: '#CFCFCF',
+          minHeight: '8vh',
+          display: 'flex',
+          marginLeft: 'auto',
+          marginRight: '2vw',
+          flexDirection: 'column',
           padding: '0em',
         }}
       >
-        Dawid
-        <Divider variant="middle" />
+        <Box style={{ display: 'flex', margin: 'auto' }}>
+          <form className={classes.myForm} onSubmit={handleLogin}>
+            <TextField
+              style={{ fontSize: '2', margin: 'auto' }}
+              value={login}
+              onInput={(e) => setLogin(e.target.value)}
+              variant="outlined"
+            />
+            <TextField
+              style={{ fontSize: '2', margin: 'auto' }}
+              value={password}
+              onInput={(e) => setPassword(e.target.value)}
+              variant="outlined"
+            />
+            <Button
+              type="submit"
+              className={classes.button}
+              color="primary"
+              variant="contained"
+            >
+              Login
+            </Button>
+          </form>
+          <Button
+            className={classes.button}
+            color="primary"
+            variant="contained"
+          >
+            Register
+          </Button>
+        </Box>
       </Box>
+      <Divider />
       <Grid
         container
         direction="row"
         alignItems="center"
         justify="center"
-        style={{ minHeight: '90vh', backgroundColor: '#DFDFDF' }}
+        style={{ margin: 'auto' }}
       >
         <Button className={classes.button} color="primary" variant="contained">
           Create
