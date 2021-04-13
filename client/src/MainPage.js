@@ -6,8 +6,6 @@ import {
   CssBaseline,
   Divider,
   Grid,
-  Paper,
-  Toolbar,
   Typography,
   TextField,
 } from '@material-ui/core';
@@ -22,14 +20,30 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
   },
+  header: {
+    minHeight: '8vh',
+    maxHeight: '8vh',
+    width: '100vw',
+    display: 'flex',
+    flexDirection: 'column',
+  },
   button: {
-    margin: 2,
-    width: 100,
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    marginLeft: '.5vw',
+    minWidth: '120px',
     height: '4vh',
   },
   myForm: {
-    height: '4vh',
     display: 'flex',
+    marginLeft: 'auto',
+  },
+  textField: {
+    width: '150px',
+  },
+  leftAppName: {
+    marginLeft: '1vw',
+    fontWeight: 'bold',
   },
 });
 
@@ -45,41 +59,47 @@ export default function MainPage() {
   return (
     <Container className={classes.container}>
       <CssBaseline />
-      <Box
-        style={{
-          minHeight: '8vh',
-          display: 'flex',
-          marginLeft: 'auto',
-          marginRight: '2vw',
-          flexDirection: 'column',
-          padding: '0em',
-        }}
-      >
-        <Box style={{ display: 'flex', margin: 'auto' }}>
+      <Box className={classes.header}>
+        <Box style={{ display: 'flex', margin: 'auto', width: '100vw' }}>
+          <Typography className={classes.leftAppName} variant="h4">
+            Another! Kahoot
+          </Typography>
           <form className={classes.myForm} onSubmit={handleLogin}>
             <TextField
-              style={{ fontSize: '2', margin: 'auto' }}
+              className={classes.textField}
+              inputProps={{ maxLength: 12 }}
+              size="small"
+              placeholder="Login"
+              label="Login"
               value={login}
               onInput={(e) => setLogin(e.target.value)}
               variant="outlined"
             />
             <TextField
-              style={{ fontSize: '2', margin: 'auto' }}
+              className={classes.textField}
+              inputProps={{ maxLength: 12 }}
+              type="password"
+              size="small"
+              placeholder="Password"
+              label="Password"
               value={password}
               onInput={(e) => setPassword(e.target.value)}
               variant="outlined"
             />
-            <Button
-              type="submit"
-              className={classes.button}
-              color="primary"
-              variant="contained"
-            >
-              Login
-            </Button>
+            <Box style={{ display: 'flex', margin: 'auto' }}>
+              <Button
+                type="submit"
+                className={classes.button}
+                color="primary"
+                variant="contained"
+              >
+                Login
+              </Button>
+            </Box>
           </form>
           <Button
             className={classes.button}
+            style={{ marginRight: '1vw' }}
             color="primary"
             variant="contained"
           >
