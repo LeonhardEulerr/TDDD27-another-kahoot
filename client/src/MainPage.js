@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/core';
+import Popup from './Popup';
 
 const useStyles = makeStyles({
   container: {
@@ -51,9 +52,14 @@ export default function MainPage() {
   const classes = useStyles();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
+  const [openPopup, setOpenPopup] = useState(true);
 
   const handleLogin = () => {
     return;
+  };
+
+  const createQuiz = () => {
+    setOpenPopup(true);
   };
 
   return (
@@ -115,13 +121,24 @@ export default function MainPage() {
         justify="center"
         style={{ margin: 'auto' }}
       >
-        <Button className={classes.button} color="primary" variant="contained">
+        <Button
+          onClick={createQuiz}
+          className={classes.button}
+          color="primary"
+          variant="contained"
+        >
           Create
         </Button>
         <Button className={classes.button} color="primary" variant="contained">
           Join
         </Button>
       </Grid>
+      <Popup
+        openPopup={openPopup}
+        setOpenPopup={setOpenPopup}
+        title="Test title"
+        msg="You must register in order to create a quiz"
+      ></Popup>
     </Container>
   );
 }
