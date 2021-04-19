@@ -12,6 +12,8 @@ import {
 
 import { makeStyles } from '@material-ui/core';
 import Popup from './Popup';
+import RegisterDialog from './RegisterDialog';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles({
   container: {
@@ -48,11 +50,14 @@ const useStyles = makeStyles({
   },
 });
 
-export default function MainPage() {
+export default function MainPage(props) {
   const classes = useStyles();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const [openPopup, setOpenPopup] = useState(true);
+  const [openPopup, setOpenPopup] = useState(false);
+  const [openRegForm, setOpenRegForm] = useState(false);
+
+  const history = useHistory();
 
   const handleLogin = () => {
     return;
@@ -60,6 +65,10 @@ export default function MainPage() {
 
   const createQuiz = () => {
     setOpenPopup(true);
+  };
+
+  const join = () => {
+    return history.push('join');
   };
 
   return (
@@ -108,6 +117,7 @@ export default function MainPage() {
             style={{ marginRight: '1vw' }}
             color="primary"
             variant="contained"
+            onClick={() => setOpenRegForm(true)}
           >
             Register
           </Button>
@@ -129,7 +139,12 @@ export default function MainPage() {
         >
           Create
         </Button>
-        <Button className={classes.button} color="primary" variant="contained">
+        <Button
+          onClick={join}
+          className={classes.button}
+          color="primary"
+          variant="contained"
+        >
           Join
         </Button>
       </Grid>
@@ -139,6 +154,10 @@ export default function MainPage() {
         title="Test title"
         msg="You must register in order to create a quiz"
       ></Popup>
+      <RegisterDialog
+        openRegForm={openRegForm}
+        setOpenRegForm={setOpenRegForm}
+      ></RegisterDialog>
     </Container>
   );
 }
