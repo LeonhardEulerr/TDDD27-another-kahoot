@@ -31,6 +31,41 @@ const register = (req, res, next) => {
   });
 };
 
+const login = (req, res, next) => {
+  var login = req.body.login;
+  var password = req.body.password;
+
+  User.findOne({ login: login }).then((user) => {
+    if (user) {
+      bcrypt.compare(password, user.password, function (err, result) {
+        if (err) {
+          res.json({
+            error: err,
+          });
+        }
+        if (result) {
+          let token = jwt.sign({ login: user.login }, 'verySecret', {
+            expiresIn: '1h',
+          });
+          res.json({
+            message: 'Login successful!',
+            token,
+          });
+        } else {
+          res.json({
+            message: 'Password does not match',
+          });
+        }
+      });
+    } else {
+      res.json({
+        message: 'Nop user found!',
+      });
+    }
+  });
+};
+
 module.exports = {
   register,
+  login,
 };
