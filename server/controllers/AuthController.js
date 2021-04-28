@@ -2,6 +2,21 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const validate = (req, res, next) => {
+  // middleware will not come here if user wasnt authenticated
+  User.findOne({ login: req.user.login }).then((user) => {
+    if (user) {
+      res.status(200).json({
+        user,
+      });
+    } else {
+      res.status(400).json({
+        message: 'Nop user found!',
+      });
+    }
+  });
+};
+
 const register = (req, res, next) => {
   bcrypt.hash(req.body.password, 10, function (err, hashedPass) {
     if (err) {
@@ -47,18 +62,18 @@ const login = (req, res, next) => {
           let token = jwt.sign({ login: user.login }, 'verySecret', {
             expiresIn: '1h',
           });
-          res.json({
+          res.status(200).json({
             message: 'Login successful!',
             token,
           });
         } else {
-          res.json({
+          res.status(400).json({
             message: 'Password does not match',
           });
         }
       });
     } else {
-      res.json({
+      res.status(400).json({
         message: 'Nop user found!',
       });
     }
@@ -68,4 +83,5 @@ const login = (req, res, next) => {
 module.exports = {
   register,
   login,
+  validate,
 };
