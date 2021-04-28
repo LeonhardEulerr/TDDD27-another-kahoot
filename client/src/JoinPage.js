@@ -47,12 +47,7 @@ export default function JoinPage() {
           value={pinCode}
           onInput={(e) => setPinCode(e.target.value)}
         ></TextField>
-        <Button
-          type="submit"
-          className={classes.button}
-          color="primary"
-          variant="contained"
-        >
+        <Button className={classes.button} color="primary" variant="contained">
           Join
         </Button>
       </form>

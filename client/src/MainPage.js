@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   Box,
   Button,
@@ -14,6 +15,10 @@ import { makeStyles } from '@material-ui/core';
 import Popup from './Popup';
 import RegisterDialog from './RegisterDialog';
 import { useHistory } from 'react-router';
+
+const api = axios.create({
+  baseURL: `http://localhost:3000/api/`,
+});
 
 const useStyles = makeStyles({
   container: {
@@ -48,6 +53,10 @@ const useStyles = makeStyles({
     marginLeft: '1vw',
     fontWeight: 'bold',
   },
+  loginContainer: {
+    display: 'flex',
+    marginLeft: 'auto',
+  },
 });
 
 export default function MainPage(props) {
@@ -56,11 +65,42 @@ export default function MainPage(props) {
   const [password, setPassword] = useState('');
   const [openPopup, setOpenPopup] = useState(false);
   const [openRegForm, setOpenRegForm] = useState(false);
+  const [msg, setMsg] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const history = useHistory();
 
+  useEffect(() => {
+    api
+      .get('/validate', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((_res) => {
+        setIsLoggedIn(true);
+      })
+      .catch((err) => {
+        setIsLoggedIn(false);
+        console.log(err.response.data.message);
+      });
+  }, []);
+
   const handleLogin = () => {
-    return;
+    api
+      .post('/login', { login, password })
+      .then((res) => {
+        localStorage.setItem('token', res.data.token);
+      })
+      .catch((err) => {
+        setMsg('Login or password does not match!');
+        setOpenPopup(true);
+      });
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    window.location.reload();
   };
 
   const createQuiz = () => {
@@ -79,48 +119,66 @@ export default function MainPage(props) {
           <Typography className={classes.leftAppName} variant="h4">
             Another! Kahoot
           </Typography>
-          <form className={classes.myForm} onSubmit={handleLogin}>
-            <TextField
-              className={classes.textField}
-              inputProps={{ maxLength: 12 }}
-              size="small"
-              placeholder="Login"
-              label="Login"
-              value={login}
-              onInput={(e) => setLogin(e.target.value)}
-              variant="outlined"
-            />
-            <TextField
-              className={classes.textField}
-              inputProps={{ maxLength: 12 }}
-              type="password"
-              size="small"
-              placeholder="Password"
-              label="Password"
-              value={password}
-              onInput={(e) => setPassword(e.target.value)}
-              variant="outlined"
-            />
-            <Box style={{ display: 'flex', margin: 'auto' }}>
+          {!isLoggedIn ? (
+            <Box className={classes.loginContainer}>
+              <form className={classes.myForm} onSubmit={handleLogin}>
+                <TextField
+                  className={classes.textField}
+                  inputProps={{ maxLength: 12 }}
+                  size="small"
+                  placeholder="Login"
+                  label="Login"
+                  value={login}
+                  onInput={(e) => setLogin(e.target.value)}
+                  variant="outlined"
+                />
+                <TextField
+                  className={classes.textField}
+                  inputProps={{ maxLength: 12 }}
+                  type="password"
+                  size="small"
+                  placeholder="Password"
+                  label="Password"
+                  value={password}
+                  onInput={(e) => setPassword(e.target.value)}
+                  variant="outlined"
+                />
+                <Box style={{ display: 'flex', margin: 'auto' }}>
+                  <Button
+                    type="submit"
+                    className={classes.button}
+                    color="primary"
+                    variant="contained"
+                    onClick={handleLogin}
+                  >
+                    Login
+                  </Button>
+                </Box>
+              </form>
+              <Button
+                className={classes.button}
+                style={{ marginRight: '1vw' }}
+                color="primary"
+                variant="contained"
+                onClick={() => setOpenRegForm(true)}
+              >
+                Register
+              </Button>
+            </Box>
+          ) : (
+            <Box className={classes.loginContainer}>
               <Button
                 type="submit"
                 className={classes.button}
+                style={{ marginRight: '1vw' }}
                 color="primary"
                 variant="contained"
+                onClick={logout}
               >
-                Login
-              </Button>
+                Logout
+              </Button>{' '}
             </Box>
-          </form>
-          <Button
-            className={classes.button}
-            style={{ marginRight: '1vw' }}
-            color="primary"
-            variant="contained"
-            onClick={() => setOpenRegForm(true)}
-          >
-            Register
-          </Button>
+          )}
         </Box>
       </Box>
       <Divider />
@@ -152,7 +210,7 @@ export default function MainPage(props) {
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
         title="Test title"
-        msg="You must register in order to create a quiz"
+        msg={msg}
       ></Popup>
       <RegisterDialog
         openRegForm={openRegForm}

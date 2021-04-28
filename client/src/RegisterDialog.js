@@ -1,18 +1,20 @@
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogContent,
   DialogTitle,
-  DialogActions,
   TextField,
   Typography,
   IconButton,
   Button,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-
-import React, { useState } from 'react';
-
 import { makeStyles } from '@material-ui/core';
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: `http://localhost:3000/api/`,
+});
 
 const useStyles = makeStyles({
   dTitle: {
@@ -48,7 +50,16 @@ export default function RegisterDialog(props) {
   const [email, setEmail] = useState('');
 
   const register = () => {
-    return;
+    api
+      .post('register', { login, password, email })
+      .then((res) => {
+        console.log(res.data);
+        setOpenRegForm(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setOpenRegForm(false);
+      });
   };
 
   const handleClose = () => {
@@ -73,7 +84,7 @@ export default function RegisterDialog(props) {
         <form className={classes.regForm} onSubmit={register}>
           <TextField
             className={classes.textField}
-            inputProps={{ maxLength: 12 }}
+            inputProps={{ maxLength: 45 }}
             size="small"
             placeholder="Email"
             type="email"
@@ -104,10 +115,11 @@ export default function RegisterDialog(props) {
             variant="outlined"
           />
           <Button
-            type="submit"
+            type="button"
             className={classes.button}
             color="primary"
             variant="contained"
+            onClick={register}
           >
             Register
           </Button>
