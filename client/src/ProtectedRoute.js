@@ -9,9 +9,12 @@ const api = axios.create({
 export default function ProtectedRoute({ component: Component, ...rest }) {
   const [isAuth, setIsAuth] = useState(undefined);
 
-  useEffect(async () => {
-    setIsAuth(await validate());
-  });
+  useEffect(() => {
+    async function fetchData() {
+      setIsAuth(await validate());
+    }
+    fetchData();
+  }, []);
 
   const validate = async () => {
     return api
