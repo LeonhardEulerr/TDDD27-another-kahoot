@@ -102,6 +102,10 @@ export default function MainPage(props) {
       });
   };
 
+  const showQuizes = () => {
+    return history.push('profile');
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     window.location.reload();
@@ -172,6 +176,15 @@ export default function MainPage(props) {
           ) : (
             <Box className={classes.loginContainer}>
               <Button
+                className={classes.button}
+                style={{ marginRight: '1vw' }}
+                color="primary"
+                variant="contained"
+                onClick={showQuizes}
+              >
+                Show quizes
+              </Button>
+              <Button
                 type="submit"
                 className={classes.button}
                 style={{ marginRight: '1vw' }}
@@ -180,7 +193,7 @@ export default function MainPage(props) {
                 onClick={logout}
               >
                 Logout
-              </Button>{' '}
+              </Button>
             </Box>
           )}
         </Box>

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { makeStyles } from '@material-ui/core';
 import {
   Box,
   Container,
@@ -6,8 +7,6 @@ import {
   Typography,
   CircularProgress,
 } from '@material-ui/core';
-
-import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
   container: {

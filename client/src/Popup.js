@@ -1,17 +1,13 @@
+import React from 'react';
+import CloseIcon from '@material-ui/icons/Close';
+import { makeStyles } from '@material-ui/core';
 import {
   Dialog,
   DialogContent,
   DialogTitle,
-  DialogActions,
   Typography,
   IconButton,
-  Button,
 } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-
-import React, { useState } from 'react';
-
-import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
   dTitle: {
