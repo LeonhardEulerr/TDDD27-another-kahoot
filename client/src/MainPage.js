@@ -71,22 +71,24 @@ export default function MainPage(props) {
   const history = useHistory();
 
   useEffect(() => {
-    validate();
+    async function fetchData() {
+      setIsLoggedIn(await validate());
+    }
+    fetchData();
   }, []);
 
-  const validate = () => {
-    api
+  const validate = async () => {
+    return api
       .get('/validate', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       })
       .then((_res) => {
-        setIsLoggedIn(true);
+        return true;
       })
-      .catch((err) => {
-        setIsLoggedIn(false);
-        console.log(err.response.data.message);
+      .catch((_err) => {
+        return false;
       });
   };
 
