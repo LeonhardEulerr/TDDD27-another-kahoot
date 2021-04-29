@@ -71,6 +71,10 @@ export default function MainPage(props) {
   const history = useHistory();
 
   useEffect(() => {
+    validate();
+  }, []);
+
+  const validate = () => {
     api
       .get('/validate', {
         headers: {
@@ -84,7 +88,7 @@ export default function MainPage(props) {
         setIsLoggedIn(false);
         console.log(err.response.data.message);
       });
-  }, []);
+  };
 
   const handleLogin = () => {
     api
@@ -92,7 +96,7 @@ export default function MainPage(props) {
       .then((res) => {
         localStorage.setItem('token', res.data.token);
       })
-      .catch((err) => {
+      .catch((_err) => {
         setMsg('Login or password does not match!');
         setOpenPopup(true);
       });
