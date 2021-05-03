@@ -176,7 +176,6 @@ export default function CreateQuizPage() {
           flexDirection: 'column',
           width: '15vw',
           maxHeight: '100vh',
-          overflow: 'auto',
         }}
       >
         <Box
@@ -184,7 +183,7 @@ export default function CreateQuizPage() {
             display: 'flex',
             flexDirection: 'column',
             width: '15vw',
-            maxHeight: '100vh',
+            maxHeight: '89vh',
             overflow: 'auto',
           }}
         >
