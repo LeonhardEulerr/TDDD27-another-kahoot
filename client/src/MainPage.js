@@ -114,7 +114,8 @@ export default function MainPage(props) {
   };
 
   const createQuiz = () => {
-    setOpenPopup(true);
+    return history.push('create');
+    //setOpenPopup(true);
   };
 
   const join = () => {

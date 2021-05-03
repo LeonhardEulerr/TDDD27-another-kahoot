@@ -6,6 +6,7 @@ import MainPage from './MainPage';
 import Lobby from './Lobby';
 import ProtectedRoute from './ProtectedRoute';
 import TestRoute from './TestRoute';
+import CreateQuizPage from './CreateQuizPage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Lobby />
         </Route>
         <ProtectedRoute path="/test" component={TestRoute} />
+        <ProtectedRoute path="/create" component={CreateQuizPage} />
       </Switch>
     </Router>
   );
