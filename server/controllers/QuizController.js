@@ -31,7 +31,7 @@ const saveQuestion = (req, res, _next) => {
 
 const saveQuiz = (req, res, _next) => {
   let quiz = new Quiz({
-    user: req.user._id,
+    user: req.user.login,
     name: req.body.name,
     questions: req.body.ids,
   });
@@ -64,8 +64,42 @@ const getQuiz = (req, res, _next) => {
     });
 };
 
+const getQuizes = (req, res, _next) => {
+  Quiz.find({ user: req.user.login })
+    .populate('questions')
+    .exec()
+    .then((quizes) => {
+      if (quizes) {
+        res
+          .status(200)
+          .json({ message: 'Quizes fetched successfully.', quizes });
+      } else {
+        res.status(400).json({ message: 'Quizes coudnt be fecthed.' });
+      }
+    });
+};
+
+const deleteQuiz = (req, res, _next) => {
+  const quizId = req.body.quizId;
+  Quiz.findOneAndDelete({ _id: quizId }, (err, quiz) => {
+    if (err) {
+      console.log('error', err);
+      return;
+    } else {
+      res.status(200).json({ message: 'Quiz deleted successfully', quiz });
+      // remove all the quiestions as well
+      // could use pre('remove') but questions have no relation to quiz
+      for (const id of quiz.questions) {
+        Question.findOneAndDelete({ _id: id }).exec();
+      }
+    }
+  });
+};
+
 module.exports = {
   saveQuestion,
   saveQuiz,
   getQuiz,
+  getQuizes,
+  deleteQuiz,
 };
