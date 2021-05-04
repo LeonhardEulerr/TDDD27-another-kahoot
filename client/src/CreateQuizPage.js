@@ -89,6 +89,14 @@ export default function CreateQuizPage() {
   const [correctC, setCorrectC] = useState(false);
   const [answerD, setAnswerD] = useState('');
   const [correctD, setCorrectD] = useState(false);
+  const [ids, setIds] = useState([]);
+  const [quizId, setQuizId] = useState('');
+
+  useEffect(() => {
+    if (ids.length > 0) {
+      postQuiz();
+    }
+  }, [ids]);
 
   useEffect(() => {
     saveQuestion();
@@ -165,6 +173,65 @@ export default function CreateQuizPage() {
     setCorrectB(false);
     setCorrectC(false);
     setCorrectD(false);
+  };
+
+  const postQuestion = (question) => {
+    return api
+      .post('/question', question, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        return res.data.id;
+      })
+      .catch((_err) => {
+        // setMsg('Login or password does not match!');
+        // setOpenPopup(true);
+        console.log('error', _err);
+      });
+  };
+
+  const postAllQuestions = async () => {
+    const newArr = [];
+    for (const q of questions) {
+      const newId = await postQuestion(q);
+      newArr.push(newId);
+    }
+    setIds(newArr);
+  };
+
+  const postQuiz = async () => {
+    const quiz = { name, ids };
+    api
+      .post('/quiz', quiz, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        setQuizId(res.data.id);
+      })
+      .catch((_err) => {
+        // setMsg('Login or password does not match!');
+        // setOpenPopup(true);
+        console.log('error', _err);
+      });
+  };
+
+  const getQuiz = () => {
+    api
+      .get('/quiz', {
+        params: {
+          id: quizId,
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        console.log('QUIZ', res);
+      });
   };
 
   return (
@@ -345,6 +412,22 @@ export default function CreateQuizPage() {
             </Box>
           </Box>
         </Box>
+        <Button
+          //className={classes.questionButton}
+          color="primary"
+          variant="contained"
+          onClick={postAllQuestions}
+        >
+          Save Quiz
+        </Button>
+        <Button
+          //className={classes.questionButton}
+          color="primary"
+          variant="contained"
+          onClick={getQuiz}
+        >
+          Get Quiz
+        </Button>
       </Box>
     </Container>
   );
