@@ -7,6 +7,7 @@ import Lobby from './Lobby';
 import ProtectedRoute from './ProtectedRoute';
 import TestRoute from './TestRoute';
 import CreateQuizPage from './CreateQuizPage';
+import ProfilePage from './ProfilePage';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         </Route>
         <ProtectedRoute path="/test" component={TestRoute} />
         <ProtectedRoute path="/create" component={CreateQuizPage} />
+        <ProtectedRoute path="/profile" component={ProfilePage} />
       </Switch>
     </Router>
   );

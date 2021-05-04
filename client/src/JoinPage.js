@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Box, Button, TextField } from '@material-ui/core';
-
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -32,13 +31,9 @@ export default function JoinPage() {
 
   const [pinCode, setPinCode] = useState('');
 
-  const join = () => {
-    return;
-  };
-
   return (
     <Box className={classes.container}>
-      <form className={classes.form} onSumbit={join}>
+      <form className={classes.form}>
         <TextField
           className={classes.pinField}
           variant="outlined"

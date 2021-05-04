@@ -6,8 +6,6 @@ import {
   Container,
   CssBaseline,
   Divider,
-  Grid,
-  Typography,
   TextField,
   Checkbox,
 } from '@material-ui/core';
@@ -15,9 +13,6 @@ import {
 import { makeStyles } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
-import Popup from './Popup';
-import RegisterDialog from './RegisterDialog';
-import { useHistory } from 'react-router';
 
 const api = axios.create({
   baseURL: `http://localhost:3000/api/`,
