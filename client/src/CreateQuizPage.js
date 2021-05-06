@@ -92,10 +92,11 @@ export default function CreateQuizPage() {
   const [quizId, setQuizId] = useState('');
 
   useEffect(() => {
-    if (id) getQuiz(id);
     if (ids.length > 0) {
-      postQuiz();
+      if (id) updateQuiz();
+      else postQuiz();
     }
+    if (id) getQuiz(id);
   }, [ids]);
 
   useEffect(() => {
@@ -214,6 +215,19 @@ export default function CreateQuizPage() {
     setCorrectD(false);
   };
 
+  const updateQuestion = async (question) => {
+    try {
+      const res = await api.put(`/question/${question.questionId}`, question, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      return res.data.id;
+    } catch (_err) {
+      console.log('error', _err);
+    }
+  };
+
   const postQuestion = async (question) => {
     try {
       const res = await api.post('/question', question, {
@@ -231,19 +245,38 @@ export default function CreateQuizPage() {
 
   const postAllQuestions = async () => {
     const newArr = [];
+    let newId = '';
     for (const q of questions) {
-      const newId = await postQuestion(q);
+      if (q.questionId) {
+        newId = await updateQuestion(q);
+      } else {
+        newId = await postQuestion(q);
+      }
       newArr.push(newId);
     }
     setIds(newArr);
   };
 
   const postQuiz = async () => {
-    let quiz = {};
-    if (id) quiz = { id, name, ids };
-    else quiz = { name, ids };
+    let quiz = { name, ids };
     api
       .post('/quiz', quiz, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then((res) => {
+        setQuizId(res.data.id);
+      })
+      .catch((_err) => {
+        console.log('error', _err);
+      });
+  };
+
+  const updateQuiz = () => {
+    let quiz = { name, ids };
+    api
+      .put(`/quiz/${id}`, quiz, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -267,6 +300,7 @@ export default function CreateQuizPage() {
         },
       })
       .then((res) => {
+        setName(res.data.name);
         readInQuestionsFromDb(res.data.questions);
       });
   };
