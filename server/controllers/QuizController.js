@@ -1,8 +1,9 @@
 const Question = require('../models/Question');
 const Quiz = require('../models/Quiz');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 const saveQuestion = (req, res, _next) => {
-  let question = new Question({
+  let question = {
     title: req.body.title,
     answerA: req.body.answerA,
     correctA: req.body.correctA,
@@ -12,13 +13,23 @@ const saveQuestion = (req, res, _next) => {
     correctC: req.body.correctC,
     answerD: req.body.answerD,
     correctD: req.body.correctD,
-  });
+  };
 
-  question
-    .save()
-    .then((question) => {
+  query = {};
+  if (ObjectId.isValid(req.body.questionId)) {
+    query = {
+      _id: req.body.questionId,
+    };
+  }
+
+  Question.findOneAndUpdate(query, question, {
+    upsert: true,
+    new: true,
+  })
+    .exec()
+    .then((q) => {
       res.status(200).json({
-        id: question._id,
+        id: q._id,
         message: 'Question added successfully!',
       });
     })
@@ -30,15 +41,26 @@ const saveQuestion = (req, res, _next) => {
 };
 
 const saveQuiz = (req, res, _next) => {
-  let quiz = new Quiz({
+  let quiz = {
     user: req.user.login,
     name: req.body.name,
     questions: req.body.ids,
-  });
+  };
 
-  quiz
-    .save()
-    .then((quiz) => {
+  query = {};
+  if (ObjectId.isValid(req.body.id)) {
+    query = {
+      _id: req.body.id,
+    };
+  }
+
+  Quiz.findOneAndUpdate(query, quiz, {
+    upsert: true,
+    new: true,
+  })
+    .exec()
+    .then((q) => {
+      console.log(quiz);
       res.status(200).json({
         id: quiz._id,
         message: 'Quiz added successfully!',
@@ -59,7 +81,6 @@ const getQuiz = (req, res, _next) => {
         console.log(err);
         return;
       }
-      console.log('QUIZ', quiz);
       res.status(200).json(quiz);
     });
 };

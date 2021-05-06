@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router';
 import axios from 'axios';
 import {
   Box,
@@ -71,10 +72,13 @@ const useStyles = makeStyles({
 
 export default function CreateQuizPage() {
   const classes = useStyles();
+  const history = useHistory();
+  const { id } = useParams();
 
   const [name, setName] = useState('');
   const [questions, setQuestions] = useState([]);
   const [index, setIndex] = useState(0);
+  const [questionId, setQuestionId] = useState('');
   const [title, setTitle] = useState('');
   const [answerA, setAnswerA] = useState('');
   const [correctA, setCorrectA] = useState(false);
@@ -88,6 +92,7 @@ export default function CreateQuizPage() {
   const [quizId, setQuizId] = useState('');
 
   useEffect(() => {
+    if (id) getQuiz(id);
     if (ids.length > 0) {
       postQuiz();
     }
@@ -107,12 +112,48 @@ export default function CreateQuizPage() {
     correctD,
   ]);
 
+  const readInQuestionsFromDb = (qs) => {
+    let newArr = [];
+
+    // fill in questions state
+    qs.map((q, i) => {
+      newArr.push({
+        name: `Question ${i + 1}`,
+        questionId: q._id,
+        title: q.title,
+        answerA: q.answerA,
+        answerB: q.answerB,
+        answerC: q.answerC,
+        answerD: q.answerD,
+        correctA: q.correctA,
+        correctB: q.correctB,
+        correctC: q.correctC,
+        correctD: q.correctD,
+      });
+    });
+    setQuestions(newArr);
+
+    // show first question
+    setIndex(0);
+    setQuestionId(newArr[0].questionId);
+    setTitle(newArr[0].title);
+    setAnswerA(newArr[0].answerA);
+    setAnswerB(newArr[0].answerB);
+    setAnswerC(newArr[0].answerC);
+    setAnswerD(newArr[0].answerD);
+    setCorrectA(newArr[0].correctA);
+    setCorrectB(newArr[0].correctB);
+    setCorrectC(newArr[0].correctC);
+    setCorrectD(newArr[0].correctD);
+  };
+
   const addQuestion = () => {
     setIndex(questions.length);
     setQuestions([
       ...questions,
       {
         name: `Question ${questions.length + 1}`,
+        questionId: '',
         title,
         answerA,
         answerB,
@@ -130,6 +171,7 @@ export default function CreateQuizPage() {
   const saveQuestion = () => {
     let tmpQuestion = {
       name: `Question ${index + 1}`,
+      questionId,
       title,
       answerA,
       answerB,
@@ -146,7 +188,9 @@ export default function CreateQuizPage() {
   };
 
   const loadQuestion = (i) => {
+    console.log(questions);
     setIndex(i);
+    setQuestionId(questions[i].questionId);
     setTitle(questions[i].title);
     setAnswerA(questions[i].answerA);
     setAnswerB(questions[i].answerB);
@@ -170,21 +214,19 @@ export default function CreateQuizPage() {
     setCorrectD(false);
   };
 
-  const postQuestion = (question) => {
-    return api
-      .post('/question', question, {
+  const postQuestion = async (question) => {
+    try {
+      const res = await api.post('/question', question, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-      })
-      .then((res) => {
-        return res.data.id;
-      })
-      .catch((_err) => {
-        // setMsg('Login or password does not match!');
-        // setOpenPopup(true);
-        console.log('error', _err);
       });
+      return res.data.id;
+    } catch (_err) {
+      // setMsg('Login or password does not match!');
+      // setOpenPopup(true);
+      console.log('error', _err);
+    }
   };
 
   const postAllQuestions = async () => {
@@ -197,7 +239,9 @@ export default function CreateQuizPage() {
   };
 
   const postQuiz = async () => {
-    const quiz = { name, ids };
+    let quiz = {};
+    if (id) quiz = { id, name, ids };
+    else quiz = { name, ids };
     api
       .post('/quiz', quiz, {
         headers: {
@@ -208,8 +252,6 @@ export default function CreateQuizPage() {
         setQuizId(res.data.id);
       })
       .catch((_err) => {
-        // setMsg('Login or password does not match!');
-        // setOpenPopup(true);
         console.log('error', _err);
       });
   };
@@ -218,14 +260,14 @@ export default function CreateQuizPage() {
     api
       .get('/quiz', {
         params: {
-          id: quizId,
+          id,
         },
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       })
       .then((res) => {
-        console.log('QUIZ', res);
+        readInQuestionsFromDb(res.data.questions);
       });
   };
 

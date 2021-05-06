@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router';
 import axios from 'axios';
 
 import { Box, Button, Divider, Typography } from '@material-ui/core';
@@ -38,6 +39,7 @@ const useStyles = makeStyles({
 
 export default function ProfilePage() {
   const classes = useStyles();
+  const history = useHistory();
 
   const [quizes, setQuizes] = useState([]);
 
@@ -62,7 +64,6 @@ export default function ProfilePage() {
 
   const deleteQuiz = (index) => {
     const quizId = quizes[index]._id;
-    console.log(quizes);
     api
       .delete('/quizes', {
         data: { quizId },
@@ -80,6 +81,11 @@ export default function ProfilePage() {
       });
   };
 
+  const editQuiz = (id) => {
+    console.log('quiz to edit', id);
+    history.push(`create/${id}`);
+  };
+
   return (
     <Box className={classes.container}>
       {quizes.map((quiz, i) => {
@@ -91,7 +97,13 @@ export default function ProfilePage() {
               </Typography>
 
               <Box className={classes.buttonContainer}>
-                <Button color="primary" variant="contained">
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={() => {
+                    editQuiz(quiz._id);
+                  }}
+                >
                   <EditIcon size="large" />
                 </Button>
 

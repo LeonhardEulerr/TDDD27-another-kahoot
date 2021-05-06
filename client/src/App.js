@@ -24,6 +24,7 @@ function App() {
           <Lobby />
         </Route>
         <ProtectedRoute path="/test" component={TestRoute} />
+        <ProtectedRoute path="/create/:id" component={CreateQuizPage} />
         <ProtectedRoute path="/create" component={CreateQuizPage} />
         <ProtectedRoute path="/profile" component={ProfilePage} />
       </Switch>
