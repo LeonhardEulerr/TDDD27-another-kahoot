@@ -67,6 +67,7 @@ export default function MainPage(props) {
   const [openRegForm, setOpenRegForm] = useState(false);
   const [msg, setMsg] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [switchLogin, setSwitchLogin] = useState(false);
 
   const history = useHistory();
 
@@ -75,7 +76,7 @@ export default function MainPage(props) {
       setIsLoggedIn(await validate());
     }
     fetchData();
-  }, []);
+  }, [switchLogin]);
 
   const validate = async () => {
     return api
@@ -97,9 +98,13 @@ export default function MainPage(props) {
       .post('/login', { login, password })
       .then((res) => {
         localStorage.setItem('token', res.data.token);
+        history.replace('/');
+        setSwitchLogin(!switchLogin);
       })
       .catch((_err) => {
         setMsg('Login or password does not match!');
+        setLogin('');
+        setPassword('');
         setOpenPopup(true);
       });
   };
@@ -156,7 +161,7 @@ export default function MainPage(props) {
                 />
                 <Box style={{ display: 'flex', margin: 'auto' }}>
                   <Button
-                    type="submit"
+                    // type="submit"
                     className={classes.button}
                     color="primary"
                     variant="contained"
