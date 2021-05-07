@@ -1,6 +1,6 @@
 # Midcourse screencast
 
-`https://liuonline-my.sharepoint.com/:v:/g/personal/dawab699_student_liu_se/EQhrtOhanb5GlVOWbewelm0BRGEQzM_KrAvW9OlYMn2IIQ?e=XmXxev`
+[`Link to midcourse screencast`](https://liuonline-my.sharepoint.com/:v:/g/personal/dawab699_student_liu_se/EQhrtOhanb5GlVOWbewelm0BRGEQzM_KrAvW9OlYMn2IIQ?e=XmXxev)
 
 # Functional specification
 
