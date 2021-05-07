@@ -491,14 +491,6 @@ export default function CreateQuizPage() {
         >
           Save Quiz
         </Button>
-        <Button
-          //className={classes.questionButton}
-          color="primary"
-          variant="contained"
-          onClick={getQuiz}
-        >
-          Get Quiz
-        </Button>
       </Box>
     </Container>
   );

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 import { Box, Button, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
+import { SocketContext } from './Contexts/SocketContext';
 
 const useStyles = makeStyles({
   container: {
@@ -28,6 +29,11 @@ const useStyles = makeStyles({
 
 export default function JoinPage() {
   const classes = useStyles();
+  const { socket } = useContext(SocketContext);
+
+  useEffect(() => {
+    socket.emit('message', { message: 'join page msg' });
+  }, []);
 
   const [pinCode, setPinCode] = useState('');
 
