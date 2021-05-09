@@ -1,6 +1,44 @@
 const Question = require('../models/Question');
-const Quiz = require('../models/Quiz');
+const { Quiz, StartedQuiz } = require('../models/Quiz');
 const ObjectId = require('mongoose').Types.ObjectId;
+
+const MAX_PIN = 10000000;
+const MIN_PIN = 100000;
+
+const getPinCode = (cb) => {
+  var pin = parseInt(Math.random() * (MAX_PIN - MIN_PIN) + MIN_PIN).toString();
+
+  StartedQuiz.findOne({ pin }, function (err, docs) {
+    if (!err && !docs) {
+      cb(pin);
+    } else {
+      getPinCode(cb);
+    }
+  });
+};
+
+const registerStartedQuiz = (req, res, _next) => {
+  getPinCode((pin) => {
+    let startedQuiz = new StartedQuiz({
+      quiz: req.body.id,
+      pin,
+    });
+
+    startedQuiz
+      .save()
+      .then((quiz) => {
+        res.status(200).json({
+          quiz,
+          message: 'Started quiz successfully',
+        });
+      })
+      .catch((_err) => {
+        res.status(400).json({
+          message: 'Quiz not added',
+        });
+      });
+  });
+};
 
 const saveQuestion = (req, res, _next) => {
   let question = new Question({
@@ -169,4 +207,5 @@ module.exports = {
   deleteQuiz,
   updateQuestion,
   updateQuiz,
+  registerStartedQuiz,
 };

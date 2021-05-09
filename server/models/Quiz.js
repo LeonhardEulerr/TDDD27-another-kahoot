@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Question = require('./Question');
 const { Schema } = mongoose;
 
 const QuizSchema = new Schema({
@@ -22,5 +21,23 @@ const QuizSchema = new Schema({
 //   next();
 // });
 
+const StartedQuizSchema = new Schema(
+  {
+    quiz: {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+    pin: {
+      type: String,
+    },
+  },
+  { timestamps: true }
+);
+StartedQuizSchema.index({ createdAt: 1 }, { expireAfterSeconds: 3600 });
+
 const Quiz = mongoose.model('Quiz', QuizSchema);
-module.exports = Quiz;
+const StartedQuiz = mongoose.model('StartedQuiz', StartedQuizSchema);
+
+module.exports = {
+  Quiz,
+  StartedQuiz,
+};
