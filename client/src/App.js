@@ -11,10 +11,13 @@ import ProfilePage from './ProfilePage';
 
 // Contexts
 import { SocketContext } from './Contexts/SocketContext';
+import { QuizContext } from './Contexts/QuizContext';
+import HostLobby from './HostLobby';
+
+import socket from './socketCfg';
 
 function App() {
-  const ENDPOINT = 'localhost:3000';
-  const [socket, setSocket] = useState(io(ENDPOINT));
+  const [pin, setPin] = useState('');
 
   useEffect(() => {
     console.log('jaja');
@@ -32,22 +35,25 @@ function App() {
   }, []);
   return (
     <SocketContext.Provider value={{ socket }}>
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <MainPage />
-          </Route>
-          <Route exact path="/join">
-            <JoinPage />
-          </Route>
-          <Route exact path="/lobby">
-            <Lobby />
-          </Route>
-          <ProtectedRoute path="/create/:id" component={CreateQuizPage} />
-          <ProtectedRoute path="/create" component={CreateQuizPage} />
-          <ProtectedRoute path="/profile" component={ProfilePage} />
-        </Switch>
-      </Router>
+      <QuizContext.Provider value={{ pin, setPin }}>
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <MainPage />
+            </Route>
+            <Route exact path="/join">
+              <JoinPage />
+            </Route>
+            <Route exact path="/lobby">
+              <Lobby />
+            </Route>
+            <ProtectedRoute path="/create/:id" component={CreateQuizPage} />
+            <ProtectedRoute path="/create" component={CreateQuizPage} />
+            <ProtectedRoute path="/profile" component={ProfilePage} />
+            <ProtectedRoute path="/hostLobby" component={HostLobby} />
+          </Switch>
+        </Router>
+      </QuizContext.Provider>
     </SocketContext.Provider>
   );
 }

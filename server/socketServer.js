@@ -6,7 +6,7 @@ module.exports.server = function (app) {
   const io = socketio(server);
 
   io.on('connection', (socket) => {
-    console.log('New user connected');
+    console.log('New user connected', socket.id);
 
     socket.on('lala', ({ lala }, callback) => {
       console.log(lala);

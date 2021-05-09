@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Box,
@@ -15,9 +15,6 @@ import { makeStyles } from '@material-ui/core';
 import Popup from './Popup';
 import RegisterDialog from './RegisterDialog';
 import { useHistory } from 'react-router';
-
-import { SocketContext } from './Contexts/SocketContext';
-import { QuizContext } from './Contexts/QuizContext';
 
 const api = axios.create({
   baseURL: `http://localhost:3000/api/`,
@@ -71,8 +68,6 @@ export default function MainPage() {
   const [msg, setMsg] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [switchLogin, setSwitchLogin] = useState(false);
-
-  const { setPin } = useContext(QuizContext);
 
   const history = useHistory();
 

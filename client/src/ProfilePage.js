@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router';
 import axios from 'axios';
 
@@ -7,6 +7,9 @@ import { makeStyles } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+
+import { SocketContext } from './Contexts/SocketContext';
+import { QuizContext } from './Contexts/QuizContext';
 
 const api = axios.create({
   baseURL: `http://localhost:3000/api/`,
@@ -40,6 +43,8 @@ const useStyles = makeStyles({
 export default function ProfilePage() {
   const classes = useStyles();
   const history = useHistory();
+
+  const { setPin } = useContext(QuizContext);
 
   const [quizes, setQuizes] = useState([]);
 
@@ -86,6 +91,29 @@ export default function ProfilePage() {
     history.push(`create/${id}`);
   };
 
+  const startQuiz = (id) => {
+    console.log('quiz to start', id);
+    api
+      .post(
+        '/startQuiz',
+        { id },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      )
+      .then((res) => {
+        // redirect to lobby in order to wait for users to join
+        //console.log(res.data);
+        setPin(res.data.quiz.pin);
+        history.push('hostLobby');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <Box className={classes.container}>
       {quizes.map((quiz, i) => {
@@ -121,6 +149,9 @@ export default function ProfilePage() {
                   style={{ backgroundColor: '#00CC22' }}
                   color="secondary"
                   variant="contained"
+                  onClick={() => {
+                    startQuiz(quiz._id);
+                  }}
                 >
                   <PlayArrowIcon size="large" />
                 </Button>
