@@ -19,17 +19,15 @@ import socket from './socketCfg';
 function App() {
   const [pin, setPin] = useState('');
 
-  useEffect(() => {
-    console.log('jaja');
-    socket.emit('lala', { lala: 'lalala' });
+  console.log('App rendering');
 
+  useEffect(() => {
     socket.on('message', (data) => {
       console.log(data);
     });
 
     return () => {
-      socket.emit('disconnect');
-
+      socket.close();
       socket.off();
     };
   }, []);
