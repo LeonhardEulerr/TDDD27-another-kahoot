@@ -12,5 +12,6 @@ router.get('/quiz', authenticate, QuizController.getQuiz);
 router.get('/quizes', authenticate, QuizController.getQuizes);
 router.delete('/quizes', authenticate, QuizController.deleteQuiz);
 router.post('/startQuiz', authenticate, QuizController.registerStartedQuiz);
+router.get('/joinQuiz/:pin', QuizController.joinQuiz);
 
 module.exports = router;

@@ -21,17 +21,15 @@ const QuizSchema = new Schema({
 //   next();
 // });
 
-const StartedQuizSchema = new Schema(
-  {
-    quiz: {
-      type: mongoose.Schema.Types.ObjectId,
-    },
-    pin: {
-      type: String,
-    },
+const StartedQuizSchema = new Schema({
+  quiz: {
+    type: mongoose.Schema.Types.ObjectId,
   },
-  { timestamps: true }
-);
+  pin: {
+    type: String,
+  },
+  createdAt: { type: Date },
+});
 StartedQuizSchema.index({ createdAt: 1 }, { expireAfterSeconds: 3600 });
 
 const Quiz = mongoose.model('Quiz', QuizSchema);

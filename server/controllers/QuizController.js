@@ -22,6 +22,7 @@ const registerStartedQuiz = (req, res, _next) => {
     let startedQuiz = new StartedQuiz({
       quiz: req.body.id,
       pin,
+      createdAt: new Date(),
     });
 
     startedQuiz
@@ -37,6 +38,18 @@ const registerStartedQuiz = (req, res, _next) => {
           message: 'Quiz not added',
         });
       });
+  });
+};
+
+const joinQuiz = (req, res, _next) => {
+  const { pin } = req.params;
+  console.log(pin);
+  StartedQuiz.findOne({ pin }, function (err, quiz) {
+    if (!err && quiz) {
+      res.status(200).json({ message: 'Quiz found' });
+    } else {
+      res.status(400).json({ message: 'Quiz not found' });
+    }
   });
 };
 
@@ -208,4 +221,5 @@ module.exports = {
   updateQuestion,
   updateQuiz,
   registerStartedQuiz,
+  joinQuiz,
 };
