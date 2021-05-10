@@ -19,8 +19,6 @@ import socket from './socketCfg';
 function App() {
   const [pin, setPin] = useState('');
 
-  console.log('App rendering');
-
   useEffect(() => {
     socket.on('message', (data) => {
       console.log(data);
