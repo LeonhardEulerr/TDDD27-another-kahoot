@@ -1,8 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
+import axios from 'axios';
 
 import { Box, Button, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import { SocketContext } from './Contexts/SocketContext';
+import { QuizContext } from './Contexts/QuizContext';
+
+const api = axios.create({
+  baseURL: `http://localhost:3000/api/`,
+});
 
 const useStyles = makeStyles({
   container: {
@@ -28,14 +34,34 @@ const useStyles = makeStyles({
 });
 
 export default function JoinPage() {
+  const [name, setName] = useState('');
+
   const classes = useStyles();
   const { socket } = useContext(SocketContext);
+  const { setPin } = useContext(QuizContext);
 
   useEffect(() => {
     socket.emit('message', { message: 'join page msg' });
   }, []);
 
-  const [pinCode, setPinCode] = useState('');
+  const [localPin, setLocalPin] = useState('');
+
+  const getQuizWithPin = (p) => {
+    console.log(p);
+    api
+      .get(`/joinQuiz/${p}`)
+      .then((_res) => {
+        setPin(p);
+        socket.emit('participantJoin', { pin: p, name }, (res) => {
+          console.log(res);
+        });
+
+        // TODO: Change page to waiting lobby for participants
+      })
+      .catch((error) => {
+        console.log(error, 'Error occured');
+      });
+  };
 
   return (
     <Box className={classes.container}>
@@ -44,11 +70,22 @@ export default function JoinPage() {
           className={classes.pinField}
           variant="outlined"
           placeholder="PIN CODE"
-          label="PIN CODE"
-          value={pinCode}
-          onInput={(e) => setPinCode(e.target.value)}
-        ></TextField>
-        <Button className={classes.button} color="primary" variant="contained">
+          value={localPin}
+          onInput={(e) => setLocalPin(e.target.value)}
+        />
+        <TextField
+          className={classes.pinField}
+          variant="outlined"
+          placeholder="USERNAME"
+          value={name}
+          onInput={(e) => setName(e.target.value)}
+        />
+        <Button
+          className={classes.button}
+          color="primary"
+          variant="contained"
+          onClick={() => getQuizWithPin(localPin)}
+        >
           Join
         </Button>
       </form>
