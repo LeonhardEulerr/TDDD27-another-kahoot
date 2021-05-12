@@ -31,7 +31,6 @@ const useStyles = makeStyles({
   header: {
     minHeight: '8vh',
     maxHeight: '8vh',
-    width: '100vw',
     display: 'flex',
     flexDirection: 'column',
   },
