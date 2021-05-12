@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router';
 import axios from 'axios';
 
 import { Box, Button, TextField } from '@material-ui/core';
@@ -34,9 +35,11 @@ const useStyles = makeStyles({
 });
 
 export default function JoinPage() {
+  const classes = useStyles();
+  const history = useHistory();
+
   const [name, setName] = useState('');
 
-  const classes = useStyles();
   const { socket } = useContext(SocketContext);
   const { setPin } = useContext(QuizContext);
 
@@ -52,9 +55,17 @@ export default function JoinPage() {
       .get(`/joinQuiz/${p}`)
       .then((_res) => {
         setPin(p);
-        socket.emit('participantJoin', { pin: p, name }, (res) => {
-          console.log(res);
-        });
+        socket.emit(
+          'joinParticipant',
+          { pin: p, name },
+          ({ success, error }) => {
+            if (success) {
+              history.replace('/lobby');
+            } else {
+              console.log(error);
+            }
+          }
+        );
 
         // TODO: Change page to waiting lobby for participants
       })
