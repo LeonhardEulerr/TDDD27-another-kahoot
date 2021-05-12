@@ -60,6 +60,23 @@ export default function NextQuestion() {
     );
   }, []);
 
+  const submitAnswer = () => {
+    socket.emit(
+      'submitAnswer',
+      {
+        pin,
+        answerA: toggleA,
+        answerB: toggleB,
+        answerC: toggleC,
+        answerD: toggleD,
+      },
+      (_res) => {
+        // TODO: change view to waitForStats
+        console.log('Change view to wait for stats');
+      }
+    );
+  };
+
   return (
     <Container className={classes.container}>
       <CssBaseline />
@@ -107,6 +124,7 @@ export default function NextQuestion() {
             style={{ width: '10vw', fontSize: '1em', margin: 'auto' }}
             variant="contained"
             color="primary"
+            onClick={submitAnswer}
           >
             Submit
           </Button>

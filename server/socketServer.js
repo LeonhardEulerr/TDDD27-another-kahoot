@@ -99,6 +99,15 @@ module.exports.server = function (app) {
       callback({ error: 'Question or user could not be fetched' });
     });
 
+    socket.on(
+      'submitAnswer',
+      ({ pin, answerA, answerB, answerC, answerD }, callback) => {
+        console.log(answerA, answerB, answerC, answerD);
+        // submiot answer to quiz answers object
+        callback();
+      }
+    );
+
     socket.on('message', ({ message }) => {
       console.log(message);
     });
