@@ -66,8 +66,6 @@ export default function JoinPage() {
             }
           }
         );
-
-        // TODO: Change page to waiting lobby for participants
       })
       .catch((error) => {
         console.log(error, 'Error occured');
