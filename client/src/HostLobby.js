@@ -26,12 +26,19 @@ const useStyles = makeStyles({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
+  button: {
+    marginTop: '2em',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    minWidth: '120px',
+    height: '4vh',
+  },
 });
 
 export default function HostLobby() {
   const [users, setUsers] = useState([]);
 
-  const { pin, setPin } = useContext(QuizContext);
+  const { pin, setPin, quiz } = useContext(QuizContext);
   const { socket } = useContext(SocketContext);
 
   const classes = useStyles();
@@ -50,12 +57,26 @@ export default function HostLobby() {
     };
   }, []);
 
+  const startQuiz = () => {
+    console.log('starting a quiz');
+    console.log(quiz);
+    socket.emit('loadNextQuestionView', { pin }, ({ success, error }) => {
+      if (success) {
+        console.log(success);
+        // change view of host to display a question
+      } else {
+        console.log(error);
+      }
+    });
+  };
+
   return (
     <Container className={classes.container}>
       <CssBaseline />
       <Box style={{ padding: '2em', marginLeft: 'auto', marginRight: 'auto' }}>
         <Typography variant="h2">{`PIN CODE: ${pin}`}</Typography>
       </Box>
+
       <Divider />
       <Box
         style={{
@@ -68,6 +89,14 @@ export default function HostLobby() {
       >
         <Typography varian="h3">Waiting for participants...</Typography>
         <CircularProgress className={classes.loadingIcon} />
+        <Button
+          color="primary"
+          variant="contained"
+          className={classes.button}
+          onClick={startQuiz}
+        >
+          Start
+        </Button>
       </Box>
       <Box
         style={{
@@ -102,7 +131,6 @@ export default function HostLobby() {
           );
         })}
       </Box>
-      <Button onClick={() => console.log(users)}>LALALALAL</Button>
     </Container>
   );
 }

@@ -1,0 +1,132 @@
+import React, { useState, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router';
+
+import { SocketContext } from './Contexts/SocketContext';
+import { QuizContext } from './Contexts/QuizContext';
+import {
+  makeStyles,
+  Container,
+  CssBaseline,
+  Box,
+  Button,
+  Typography,
+} from '@material-ui/core';
+
+const useStyles = makeStyles({
+  container: {
+    padding: '0em',
+    minWidth: '100vw',
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  button: {
+    width: '40vw',
+    height: '40vh',
+    margin: '0.5vh',
+    fontSize: '20vh',
+    color: '#DDDDDD',
+    fontWeight: 'bold',
+  },
+});
+
+export default function NextQuestion() {
+  const classes = useStyles();
+  const history = useHistory();
+  const { socket } = useContext(SocketContext);
+  const { pin } = useContext(QuizContext);
+
+  const [question, setQuestion] = useState(null);
+  const [name, setName] = useState('');
+  const [toggleA, setToggleA] = useState(false);
+  const [toggleB, setToggleB] = useState(false);
+  const [toggleC, setToggleC] = useState(false);
+  const [toggleD, setToggleD] = useState(false);
+
+  useEffect(() => {
+    socket.emit('getNextQuestion', { pin }, ({ question, name, error }) => {
+      if (question && name) {
+        setQuestion(question);
+        setName(name);
+      } else {
+        console.log(error);
+      }
+    });
+  }, []);
+
+  return (
+    <Container className={classes.container}>
+      <CssBaseline />
+      {question ? (
+        <>
+          <Box style={{ margin: 'auto', marginBottom: '0.2vh' }}>
+            <Box>
+              <Button
+                className={classes.button}
+                variant="contained"
+                style={{ backgroundColor: toggleA ? '#f7155b' : '#3f51b5' }}
+                onClick={() => setToggleA(!toggleA)}
+              >
+                {question.answerA}
+              </Button>
+              <Button
+                className={classes.button}
+                variant="contained"
+                style={{ backgroundColor: toggleB ? '#f7155b' : '#3f51b5' }}
+                onClick={() => setToggleB(!toggleB)}
+              >
+                {question.answerB}
+              </Button>
+            </Box>
+            <Box style={{}}>
+              <Button
+                className={classes.button}
+                variant="contained"
+                style={{ backgroundColor: toggleC ? '#f7155b' : '#3f51b5' }}
+                onClick={() => setToggleC(!toggleC)}
+              >
+                {question.answerC}
+              </Button>
+              <Button
+                className={classes.button}
+                variant="contained"
+                style={{ backgroundColor: toggleD ? '#f7155b' : '#3f51b5' }}
+                onClick={() => setToggleD(!toggleD)}
+              >
+                {question.answerD}
+              </Button>
+            </Box>
+          </Box>
+          <Button
+            style={{ width: '10vw', fontSize: '1em', margin: 'auto' }}
+            variant="contained"
+            color="primary"
+          >
+            Submit
+          </Button>
+          <Typography
+            variant="h3"
+            style={{
+              textAlign: 'center',
+              lineHeight: '10vh',
+              justifySelf: 'cneter',
+              backgroundColor: '#FFDDDD',
+              height: '10vh',
+              fontWeight: 'bold',
+            }}
+          >
+            {name}
+          </Typography>
+        </>
+      ) : (
+        <Box
+          style={{
+            backgroundColor: '#DDDDDD',
+          }}
+        >
+          <div>LOADING</div>
+        </Box>
+      )}
+    </Container>
+  );
+}
