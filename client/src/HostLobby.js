@@ -1,4 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router';
+
 import {
   makeStyles,
   Container,
@@ -36,12 +38,13 @@ const useStyles = makeStyles({
 });
 
 export default function HostLobby() {
+  const classes = useStyles();
+  const history = useHistory();
+
   const [users, setUsers] = useState([]);
 
   const { pin, setPin, quiz } = useContext(QuizContext);
   const { socket } = useContext(SocketContext);
-
-  const classes = useStyles();
 
   useEffect(() => {
     socket.on('newUser', ({ name }) => {
@@ -59,15 +62,18 @@ export default function HostLobby() {
 
   const startQuiz = () => {
     console.log('starting a quiz');
-    console.log(quiz);
-    socket.emit('loadNextQuestionView', { pin }, ({ success, error }) => {
-      if (success) {
-        console.log(success);
-        // change view of host to display a question
-      } else {
-        console.log(error);
+    socket.emit(
+      'loadNextQuestionView',
+      { pin, indexQuestion: 0 },
+      ({ success, error }) => {
+        if (success) {
+          console.log(success);
+          history.replace('/question');
+        } else {
+          console.log(error);
+        }
       }
-    });
+    );
   };
 
   return (
