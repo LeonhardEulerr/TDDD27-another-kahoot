@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useHistory } from 'react-router';
 import axios from 'axios';
 import {
   Box,
-  Button,
   Container,
   CssBaseline,
   Typography,
-  TextField,
-  Checkbox,
   Divider,
 } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
+import { SocketContext } from './Contexts/SocketContext';
+import { QuizContext } from './Contexts/QuizContext';
 
 const api = axios.create({
   baseURL: `http://localhost:3000/api/`,
@@ -79,14 +78,30 @@ export default function QuestionPage() {
   const classes = useStyles();
   const history = useHistory();
 
-  const [questionTitle, setQuestionTitle] = useState('Test title');
-  const [answerA, setAnswerA] = useState('Test answer A');
-  const [answerB, setAnswerB] = useState('Test answer B');
-  const [answerC, setAnswerC] = useState('Test answer C');
-  const [answerD, setAnswerD] = useState('Test answer D');
+  const { socket } = useContext(SocketContext);
+  const { pin } = useContext(QuizContext);
+
+  const [questionTitle, setQuestionTitle] = useState('');
+  const [answerA, setAnswerA] = useState('');
+  const [answerB, setAnswerB] = useState('');
+  const [answerC, setAnswerC] = useState('');
+  const [answerD, setAnswerD] = useState('');
   const [timer, setTimer] = useState(10);
 
   useEffect(() => {
+    socket.emit('getNextQuestionHost', { pin }, ({ question, error }) => {
+      console.log(question);
+      if (question) {
+        setQuestionTitle(question.title);
+        setAnswerA(question.answerA);
+        setAnswerB(question.answerB);
+        setAnswerC(question.answerC);
+        setAnswerD(question.answerD);
+      } else {
+        console.log(error);
+      }
+    });
+
     let myInterval = setInterval(() => {
       setTimer((timer) => timer - 1);
     }, 1000);
@@ -98,7 +113,7 @@ export default function QuestionPage() {
 
   useEffect(() => {
     if (timer <= 0) {
-      console.log('end question');
+      history.replace('/stats');
     }
   }, [timer]);
 
@@ -115,7 +130,11 @@ export default function QuestionPage() {
       >
         <Typography
           variant="h3"
-          style={{ textAlign: 'center', marginTop: '0.5em' }}
+          style={{
+            fontWeight: 'bold',
+            textAlign: 'center',
+            marginTop: '0.5em',
+          }}
         >
           {questionTitle}
         </Typography>
@@ -127,9 +146,10 @@ export default function QuestionPage() {
             flexDirection: 'column',
           }}
         >
-          <Box css={{ height: '50vh', margin: 'auto' }}>
-            {timer}
-            {/* DUMMY BOX */}
+          <Box css={{ margin: 'auto' }}>
+            <Typography variant="h2" style={{ fontWeight: 'bold' }}>
+              {timer}
+            </Typography>
           </Box>
           <Box className={classes.answerBox}>
             <Box className={classes.answerOptionContainer}>
