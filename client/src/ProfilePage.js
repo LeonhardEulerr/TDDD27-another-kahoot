@@ -44,7 +44,8 @@ export default function ProfilePage() {
   const classes = useStyles();
   const history = useHistory();
 
-  const { setPin } = useContext(QuizContext);
+  const { setPin, setQuiz } = useContext(QuizContext);
+  const { socket } = useContext(SocketContext);
 
   const [quizes, setQuizes] = useState([]);
 
@@ -91,7 +92,7 @@ export default function ProfilePage() {
     history.push(`create/${id}`);
   };
 
-  const startQuiz = (id) => {
+  const startQuiz = (id, i) => {
     console.log('quiz to start', id);
     api
       .post(
@@ -105,9 +106,20 @@ export default function ProfilePage() {
       )
       .then((res) => {
         // redirect to lobby in order to wait for users to join
-        //console.log(res.data);
         setPin(res.data.quiz.pin);
-        history.push('hostLobby');
+        console.log('PIN', res.data.quiz.pin);
+        socket.emit(
+          'addQuiz',
+          { pin: res.data.quiz.pin, quiz: quizes[i] },
+          ({ success, error }) => {
+            if (success) {
+              setQuiz(quizes[i]);
+              history.push('hostLobby');
+            } else {
+              console.log(error);
+            }
+          }
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -150,7 +162,7 @@ export default function ProfilePage() {
                   color="secondary"
                   variant="contained"
                   onClick={() => {
-                    startQuiz(quiz._id);
+                    startQuiz(quiz._id, i);
                   }}
                 >
                   <PlayArrowIcon size="large" />
