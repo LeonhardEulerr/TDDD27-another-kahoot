@@ -9,7 +9,15 @@ const {
   getUsersInQuiz,
 } = require('./users');
 
-const { addQuiz, removeQuiz, getNextQuestion } = require('./quizzes');
+const {
+  addQuiz,
+  addUserToQuiz,
+  getUserScore,
+  removeQuiz,
+  getNextQuestion,
+  getNextQuestionHost,
+  setQuizQuestionIndex,
+} = require('./quizzes');
 
 module.exports.server = function (app) {
   const server = http.createServer(app);
@@ -45,6 +53,9 @@ module.exports.server = function (app) {
       }
 
       socket.join(user.pin);
+      addUserToQuiz(pin, name);
+
+      // let host know about new user
       const host = getUserByNameAndPin('host', pin);
       io.to(host.id).emit('newUser', { name });
       callback({ success: true });
@@ -60,19 +71,32 @@ module.exports.server = function (app) {
       callback({ success: true });
     });
 
-    socket.on('loadNextQuestionView', ({ pin }, callback) => {
+    socket.on('loadNextQuestionView', ({ pin, indexQuestion }, callback) => {
+      //console.log(io.sockets.adapter.rooms.get(pin));
+      setQuizQuestionIndex(pin, indexQuestion);
       socket.broadcast.to(pin).emit('loadNextQuestionView', {});
       callback({ success: true });
+    });
+
+    socket.on('getNextQuestionHost', ({ pin }, callback) => {
+      const question = getNextQuestionHost(pin);
+      if (question) {
+        callback({ question });
+      } else {
+        callback({ error: 'Question could not be fetched' });
+      }
     });
 
     socket.on('getNextQuestion', ({ pin }, callback) => {
       const question = getNextQuestion(pin);
       const user = getUser(socket.id);
-      if (question && user) {
-        callback({ question, name: user.name });
+      const { score, error } = getUserScore(pin, user.name);
+      console.log(score);
+      if (question && user && score !== undefined) {
+        callback({ question, name: user.name, score: score });
       }
 
-      callback({ error: 'Question or user could not be fethced' });
+      callback({ error: 'Question or user could not be fetched' });
     });
 
     socket.on('message', ({ message }) => {
