@@ -38,20 +38,26 @@ export default function NextQuestion() {
 
   const [question, setQuestion] = useState(null);
   const [name, setName] = useState('');
+  const [score, setScore] = useState(undefined);
   const [toggleA, setToggleA] = useState(false);
   const [toggleB, setToggleB] = useState(false);
   const [toggleC, setToggleC] = useState(false);
   const [toggleD, setToggleD] = useState(false);
 
   useEffect(() => {
-    socket.emit('getNextQuestion', { pin }, ({ question, name, error }) => {
-      if (question && name) {
-        setQuestion(question);
-        setName(name);
-      } else {
-        console.log(error);
+    socket.emit(
+      'getNextQuestion',
+      { pin },
+      ({ question, name, score, error }) => {
+        if (question && name) {
+          setQuestion(question);
+          setName(name);
+          setScore(score);
+        } else {
+          console.log(error);
+        }
       }
-    });
+    );
   }, []);
 
   return (
@@ -67,7 +73,7 @@ export default function NextQuestion() {
                 style={{ backgroundColor: toggleA ? '#f7155b' : '#3f51b5' }}
                 onClick={() => setToggleA(!toggleA)}
               >
-                {question.answerA}
+                A
               </Button>
               <Button
                 className={classes.button}
@@ -75,7 +81,7 @@ export default function NextQuestion() {
                 style={{ backgroundColor: toggleB ? '#f7155b' : '#3f51b5' }}
                 onClick={() => setToggleB(!toggleB)}
               >
-                {question.answerB}
+                B
               </Button>
             </Box>
             <Box style={{}}>
@@ -85,7 +91,7 @@ export default function NextQuestion() {
                 style={{ backgroundColor: toggleC ? '#f7155b' : '#3f51b5' }}
                 onClick={() => setToggleC(!toggleC)}
               >
-                {question.answerC}
+                C
               </Button>
               <Button
                 className={classes.button}
@@ -93,7 +99,7 @@ export default function NextQuestion() {
                 style={{ backgroundColor: toggleD ? '#f7155b' : '#3f51b5' }}
                 onClick={() => setToggleD(!toggleD)}
               >
-                {question.answerD}
+                D
               </Button>
             </Box>
           </Box>
@@ -115,7 +121,7 @@ export default function NextQuestion() {
               fontWeight: 'bold',
             }}
           >
-            {name}
+            {`${name}: ${score}`}
           </Typography>
         </>
       ) : (
