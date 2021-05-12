@@ -17,6 +17,7 @@ import HostLobby from './HostLobby';
 import socket from './socketCfg';
 import NextQuestion from './NextQuestion';
 import QuestionPage from './QuestionPage';
+import AfterQuestionPage from './AfterQuestionPage';
 
 function App() {
   const [pin, setPin] = useState('');
@@ -64,6 +65,7 @@ function App() {
             <ProtectedRoute path="/profile" component={ProfilePage} />
             <ProtectedRoute path="/hostLobby" component={HostLobby} />
             <ProtectedRoute path="/question" component={QuestionPage} />
+            <ProtectedRoute path="/stats" component={AfterQuestionPage} />
           </Switch>
         </Router>
       </QuizContext.Provider>
