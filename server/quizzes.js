@@ -12,6 +12,28 @@ const addQuiz = ({ pin, quiz }) => {
   return { newQuiz };
 };
 
+const addUserToQuiz = (pin, name) => {
+  const quiz = quizzes.find((q) => q.pin === pin);
+  if (quiz) {
+    let user = {
+      name,
+      score: 0,
+    };
+    quiz.scoreboard.push(user);
+  }
+};
+
+const getUserScore = (pin, name) => {
+  const quiz = quizzes.find((q) => q.pin === pin);
+  if (quiz) {
+    const user = quiz.scoreboard.find((u) => u.name === name);
+    if (user) {
+      return { score: user.score };
+    }
+  }
+  return { error: 'Score could not be fetched' };
+};
+
 const setQuizQuestionIndex = (pin, i) => {
   const index = quizzes.findIndex((quiz) => quiz.pin === pin);
   quizzes[index].questionIndex = i;
@@ -30,6 +52,12 @@ const getNextQuestion = (pin) => {
   return question;
 };
 
+const getNextQuestionHost = (pin) => {
+  const quiz = quizzes.find((quiz) => quiz.pin === pin);
+  const i = quiz.questionIndex;
+  return quiz.quiz.questions[i];
+};
+
 const removeQuiz = (pin) => {
   const index = quizzes.findIndex((quiz) => quiz.pin === pin);
 
@@ -42,4 +70,8 @@ module.exports = {
   addQuiz,
   removeQuiz,
   getNextQuestion,
+  getNextQuestionHost,
+  setQuizQuestionIndex,
+  addUserToQuiz,
+  getUserScore,
 };
