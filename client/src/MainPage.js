@@ -119,8 +119,12 @@ export default function MainPage() {
   };
 
   const createQuiz = () => {
-    return history.push('create');
-    //setOpenPopup(true);
+    if (isLoggedIn) {
+      return history.push('create');
+    } else {
+      setMsg('You must sign in to be able to create a quiz.');
+      setOpenPopup(true);
+    }
   };
 
   const join = () => {
@@ -234,7 +238,7 @@ export default function MainPage() {
       <Popup
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
-        title="Test title"
+        title=""
         msg={msg}
       ></Popup>
       <RegisterDialog
