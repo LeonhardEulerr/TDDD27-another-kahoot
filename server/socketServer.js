@@ -13,10 +13,15 @@ const {
   addQuiz,
   addUserToQuiz,
   getUserScore,
+  addUserAnswer,
   removeQuiz,
   getNextQuestion,
   getNextQuestionHost,
   setQuizQuestionIndex,
+  setQuestionTimeout,
+  getUsersAnswer,
+  addAnswerToScoreboard,
+  getScoreboard,
 } = require('./quizzes');
 
 module.exports.server = function (app) {
@@ -87,7 +92,7 @@ module.exports.server = function (app) {
       }
     });
 
-    socket.on('getNextQuestion', ({ pin }, callback) => {
+    socket.on('getNextQuestionParticipant', ({ pin }, callback) => {
       const question = getNextQuestion(pin);
       const user = getUser(socket.id);
       const { score, error } = getUserScore(pin, user.name);
@@ -103,10 +108,47 @@ module.exports.server = function (app) {
       'submitAnswer',
       ({ pin, answerA, answerB, answerC, answerD }, callback) => {
         console.log(answerA, answerB, answerC, answerD);
-        // submiot answer to quiz answers object
-        callback();
+        const user = getUser(socket.id);
+        // submit answer to quiz answers object
+        const answer = {
+          pin,
+          socketid: socket.id,
+          name: user.name,
+          answerA,
+          answerB,
+          answerC,
+          answerD,
+        };
+        const { success, error } = addUserAnswer(answer);
+        if (error) {
+          return callback(error);
+        }
+
+        const userAnswer = getUsersAnswer(socket.id, pin);
+        addAnswerToScoreboard(user.name, pin, userAnswer.answer);
+
+        callback(success);
       }
     );
+
+    socket.on('timeout', ({ pin }, callback) => {
+      setQuestionTimeout(pin);
+      socket.broadcast.to(pin).emit('timeout', {});
+      callback({ success: 'Timeout successfully sent' });
+    });
+
+    socket.on('correctAnswer', ({ pin }, callback) => {
+      const { answer } = getUsersAnswer(socket.id, pin);
+      callback(answer);
+    });
+
+    socket.on('getQuestionStats', ({ pin }, callback) => {
+      const { scoreboard, error } = getScoreboard(pin);
+      if (error) {
+        return callback({ error });
+      }
+      callback({ scoreboard });
+    });
 
     socket.on('message', ({ message }) => {
       console.log(message);

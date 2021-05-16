@@ -46,7 +46,7 @@ export default function NextQuestion() {
 
   useEffect(() => {
     socket.emit(
-      'getNextQuestion',
+      'getNextQuestionParticipant',
       { pin },
       ({ question, name, score, error }) => {
         if (question && name) {
@@ -58,6 +58,10 @@ export default function NextQuestion() {
         }
       }
     );
+
+    socket.on('timeout', ({}) => {
+      history.replace('/answer');
+    });
   }, []);
 
   const submitAnswer = () => {
@@ -71,8 +75,8 @@ export default function NextQuestion() {
         answerD: toggleD,
       },
       (_res) => {
-        // TODO: change view to waitForStats
         console.log('Change view to wait for stats');
+        history.replace('/wait');
       }
     );
   };
