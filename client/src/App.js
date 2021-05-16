@@ -17,7 +17,10 @@ import HostLobby from './HostLobby';
 import socket from './socketCfg';
 import NextQuestion from './NextQuestion';
 import QuestionPage from './QuestionPage';
-import AfterQuestionPage from './AfterQuestionPage';
+import StatsPage from './StatsPage';
+import WaitForAnswerParticipantView from './WaitForAnswerParticipantView';
+import ShowAnswerParticipant from './ShowAnswerParticipant';
+import FinishQuiz from './FinishQuiz';
 
 function App() {
   const [pin, setPin] = useState('');
@@ -60,12 +63,19 @@ function App() {
             <Route exact path="/nextQuestion">
               <NextQuestion />
             </Route>
+            <Route exact path="/wait">
+              <WaitForAnswerParticipantView />
+            </Route>
+            <Route exact path="/answer">
+              <ShowAnswerParticipant />
+            </Route>
             <ProtectedRoute path="/create/:id" component={CreateQuizPage} />
             <ProtectedRoute path="/create" component={CreateQuizPage} />
             <ProtectedRoute path="/profile" component={ProfilePage} />
             <ProtectedRoute path="/hostLobby" component={HostLobby} />
             <ProtectedRoute path="/question" component={QuestionPage} />
-            <ProtectedRoute path="/stats" component={AfterQuestionPage} />
+            <ProtectedRoute path="/stats" component={StatsPage} />
+            <ProtectedRoute path="/endquiz" component={FinishQuiz} />
           </Switch>
         </Router>
       </QuizContext.Provider>
