@@ -88,6 +88,8 @@ export default function QuestionPage() {
   const [answerD, setAnswerD] = useState('');
   const [timer, setTimer] = useState(10);
 
+  const [intervalID, setIntervalID] = useState(undefined);
+
   useEffect(() => {
     socket.emit('getNextQuestionHost', { pin }, ({ question, error }) => {
       console.log(question);
@@ -105,6 +107,7 @@ export default function QuestionPage() {
     let myInterval = setInterval(() => {
       setTimer((timer) => timer - 1);
     }, 1000);
+    setIntervalID(myInterval);
 
     return () => {
       clearInterval(myInterval);
@@ -113,7 +116,16 @@ export default function QuestionPage() {
 
   useEffect(() => {
     if (timer <= 0) {
-      history.replace('/stats');
+      clearInterval(intervalID);
+      setTimer(0);
+
+      socket.emit('timeout', { pin }, (success, error) => {
+        if (success) {
+          history.replace('/stats');
+        } else {
+          console.log(error);
+        }
+      });
     }
   }, [timer]);
 
