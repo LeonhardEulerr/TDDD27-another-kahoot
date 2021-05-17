@@ -47,7 +47,7 @@ export default function ShowAnswerParticipant() {
       } else if (answer === 'timeout') {
         setTimeout(true);
         setBackgroundColor('#770000');
-      } else {
+      } else if (answer === 'wrong') {
         setWrong(true);
         setBackgroundColor('#770000');
       }
