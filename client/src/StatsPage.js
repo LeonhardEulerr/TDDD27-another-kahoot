@@ -119,6 +119,7 @@ export default function StatsPage() {
   };
 
   const finishQuiz = () => {
+    setIndexQuestion(0);
     history.replace('/endquiz');
   };
 
