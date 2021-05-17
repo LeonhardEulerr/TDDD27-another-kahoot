@@ -34,13 +34,17 @@ const register = (req, res, next) => {
     user
       .save()
       .then((user) => {
-        res.json({
+        let token = jwt.sign({ login: user.login }, 'verySecret', {
+          expiresIn: '8h',
+        });
+        res.status(200).json({
           message: 'User added successfully!',
+          token,
         });
       })
-      .catch((error) => {
-        res.json({
-          message: 'An error occured!',
+      .catch((_error) => {
+        res.status(400).json({
+          message: 'User already exists',
         });
       });
   });
@@ -60,7 +64,7 @@ const login = (req, res, next) => {
         }
         if (result) {
           let token = jwt.sign({ login: user.login }, 'verySecret', {
-            expiresIn: '1h',
+            expiresIn: '8h',
           });
           res.status(200).json({
             message: 'Login successful!',
@@ -74,7 +78,7 @@ const login = (req, res, next) => {
       });
     } else {
       res.status(400).json({
-        message: 'Nop user found!',
+        message: 'No user found!',
       });
     }
   });
