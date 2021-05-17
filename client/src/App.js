@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
 
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import JoinPage from './JoinPage';
 import MainPage from './MainPage';
 import LobbyParticipant from './LobbyParticipant';

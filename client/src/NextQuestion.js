@@ -59,10 +59,10 @@ export default function NextQuestion() {
       }
     );
 
-    socket.on('timeout', ({}) => {
+    socket.on('timeout', () => {
       history.replace('/answer');
     });
-  }, []);
+  }, [history, pin, socket]);
 
   const submitAnswer = () => {
     socket.emit(

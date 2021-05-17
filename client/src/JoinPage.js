@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router';
 import axios from 'axios';
 
@@ -42,10 +42,6 @@ export default function JoinPage() {
 
   const { socket } = useContext(SocketContext);
   const { setPin } = useContext(QuizContext);
-
-  useEffect(() => {
-    socket.emit('message', { message: 'join page msg' });
-  }, []);
 
   const [localPin, setLocalPin] = useState('');
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useHistory } from 'react-router';
 import { makeStyles } from '@material-ui/core';
 import {
@@ -10,7 +10,6 @@ import {
 } from '@material-ui/core';
 
 import { SocketContext } from './Contexts/SocketContext';
-import { QuizContext } from './Contexts/QuizContext';
 
 const useStyles = makeStyles({
   container: {
@@ -37,13 +36,12 @@ export default function LobbyParticipant() {
   const history = useHistory();
 
   const { socket } = useContext(SocketContext);
-  const { pin } = useContext(QuizContext);
 
   useEffect(() => {
-    socket.on('loadNextQuestionView', ({}) => {
+    socket.on('loadNextQuestionView', () => {
       history.replace('/nextQuestion');
     });
-  }, []);
+  });
 
   return (
     <Container className={classes.container}>

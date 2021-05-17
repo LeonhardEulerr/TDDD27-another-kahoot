@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  TextField,
-  Box,
-  Typography,
-  IconButton,
-  Button,
-} from '@material-ui/core';
+import { TextField, Box, Button } from '@material-ui/core';
 
 import { useHistory } from 'react-router';
 

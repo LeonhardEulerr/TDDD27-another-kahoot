@@ -1,14 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useHistory } from 'react-router';
+import React, { useEffect, useContext } from 'react';
 
 import { SocketContext } from './Contexts/SocketContext';
-import { QuizContext } from './Contexts/QuizContext';
 import {
   makeStyles,
   Container,
   CssBaseline,
   Box,
-  Button,
   Typography,
   CircularProgress,
 } from '@material-ui/core';
@@ -35,15 +32,13 @@ const useStyles = makeStyles({
 
 export default function WaitForAnswerParticipantView() {
   const classes = useStyles();
-  const history = useHistory();
   const { socket } = useContext(SocketContext);
-  const { pin } = useContext(QuizContext);
 
   useEffect(() => {
-    socket.on('correctAnswer', ({}) => {
+    socket.on('correctAnswer', () => {
       return;
     });
-  }, []);
+  }, [socket]);
 
   return (
     <Container className={classes.container}>

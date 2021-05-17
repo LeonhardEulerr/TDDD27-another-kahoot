@@ -89,7 +89,6 @@ export default function CreateQuizPage() {
   const [answerD, setAnswerD] = useState('');
   const [correctD, setCorrectD] = useState(false);
   const [ids, setIds] = useState([]);
-  const [quizId, setQuizId] = useState('');
 
   useEffect(() => {
     if (ids.length > 0) {
@@ -118,7 +117,7 @@ export default function CreateQuizPage() {
 
     // fill in questions state
     qs.map((q, i) => {
-      newArr.push({
+      return newArr.push({
         name: `Question ${i + 1}`,
         questionId: q._id,
         title: q.title,

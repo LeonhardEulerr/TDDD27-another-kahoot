@@ -101,7 +101,7 @@ export default function StatsPage() {
         setScoreboard(scoreboard);
       }
     });
-  }, []);
+  }, [socket, pin]);
 
   const nextQuestion = () => {
     socket.emit(

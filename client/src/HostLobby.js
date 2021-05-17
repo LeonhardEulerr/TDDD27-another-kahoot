@@ -43,7 +43,7 @@ export default function HostLobby() {
 
   const [users, setUsers] = useState([]);
 
-  const { pin, setPin, quiz } = useContext(QuizContext);
+  const { pin } = useContext(QuizContext);
   const { socket } = useContext(SocketContext);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function HostLobby() {
     return () => {
       socket.off();
     };
-  }, []);
+  }, [socket, pin]);
 
   const startQuiz = () => {
     console.log('starting a quiz');

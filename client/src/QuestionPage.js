@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams, useHistory } from 'react-router';
-import axios from 'axios';
+import { useHistory } from 'react-router';
 import {
   Box,
   Container,
@@ -10,14 +9,8 @@ import {
 } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import Fab from '@material-ui/core/Fab';
 import { SocketContext } from './Contexts/SocketContext';
 import { QuizContext } from './Contexts/QuizContext';
-
-const api = axios.create({
-  baseURL: `http://localhost:3000/api/`,
-});
 
 const useStyles = makeStyles({
   container: {
@@ -42,7 +35,6 @@ const useStyles = makeStyles({
   },
   answerBox: {
     display: 'flex',
-    //margin: 'auto',
     alignSelf: 'center',
     width: '80vw',
     height: '20vh',
@@ -112,7 +104,7 @@ export default function QuestionPage() {
     return () => {
       clearInterval(myInterval);
     };
-  }, []);
+  }, [socket, pin]);
 
   useEffect(() => {
     if (timer <= 0) {
@@ -127,7 +119,7 @@ export default function QuestionPage() {
         }
       });
     }
-  }, [timer]);
+  }, [timer, history, intervalID, pin, socket]);
 
   return (
     <Container className={classes.container}>
