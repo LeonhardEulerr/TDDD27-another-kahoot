@@ -265,8 +265,8 @@ export default function CreateQuizPage() {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       })
-      .then((res) => {
-        setQuizId(res.data.id);
+      .then((_res) => {
+        history.replace('/profile');
       })
       .catch((_err) => {
         console.log('error', _err);
@@ -282,7 +282,7 @@ export default function CreateQuizPage() {
         },
       })
       .then((res) => {
-        setQuizId(res.data.id);
+        history.replace('/profile');
       })
       .catch((_err) => {
         console.log('error', _err);
