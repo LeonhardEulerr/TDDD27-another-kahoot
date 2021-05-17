@@ -21,6 +21,7 @@ import StatsPage from './StatsPage';
 import WaitForAnswerParticipantView from './WaitForAnswerParticipantView';
 import ShowAnswerParticipant from './ShowAnswerParticipant';
 import FinishQuiz from './FinishQuiz';
+import RegisterPage from './RegisterPage';
 
 function App() {
   const [pin, setPin] = useState('');
@@ -69,6 +70,10 @@ function App() {
             <Route exact path="/answer">
               <ShowAnswerParticipant />
             </Route>
+            <Route exact path="/register">
+              <RegisterPage />
+            </Route>
+
             <ProtectedRoute path="/create/:id" component={CreateQuizPage} />
             <ProtectedRoute path="/create" component={CreateQuizPage} />
             <ProtectedRoute path="/profile" component={ProfilePage} />

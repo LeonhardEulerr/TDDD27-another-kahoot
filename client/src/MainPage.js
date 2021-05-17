@@ -13,7 +13,6 @@ import {
 
 import { makeStyles } from '@material-ui/core';
 import Popup from './Popup';
-import RegisterDialog from './RegisterDialog';
 import { useHistory } from 'react-router';
 
 const api = axios.create({
@@ -63,7 +62,6 @@ export default function MainPage() {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [openPopup, setOpenPopup] = useState(false);
-  const [openRegForm, setOpenRegForm] = useState(false);
   const [msg, setMsg] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [switchLogin, setSwitchLogin] = useState(false);
@@ -107,6 +105,10 @@ export default function MainPage() {
         setPassword('');
         setOpenPopup(true);
       });
+  };
+
+  const goToRegister = () => {
+    history.push('/register');
   };
 
   const showQuizes = () => {
@@ -180,7 +182,7 @@ export default function MainPage() {
                 style={{ marginRight: '1vw' }}
                 color="primary"
                 variant="contained"
-                onClick={() => setOpenRegForm(true)}
+                onClick={goToRegister}
               >
                 Register
               </Button>
@@ -241,10 +243,6 @@ export default function MainPage() {
         title=""
         msg={msg}
       ></Popup>
-      <RegisterDialog
-        openRegForm={openRegForm}
-        setOpenRegForm={setOpenRegForm}
-      ></RegisterDialog>
     </Container>
   );
 }
