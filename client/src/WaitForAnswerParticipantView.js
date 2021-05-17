@@ -1,4 +1,5 @@
 import React, { useEffect, useContext } from 'react';
+import { useHistory } from 'react-router';
 
 import { SocketContext } from './Contexts/SocketContext';
 import {
@@ -32,11 +33,12 @@ const useStyles = makeStyles({
 
 export default function WaitForAnswerParticipantView() {
   const classes = useStyles();
+  const history = useHistory();
   const { socket } = useContext(SocketContext);
 
   useEffect(() => {
-    socket.on('correctAnswer', () => {
-      return;
+    socket.on('timeout', () => {
+      history.replace('/answer');
     });
   }, [socket]);
 

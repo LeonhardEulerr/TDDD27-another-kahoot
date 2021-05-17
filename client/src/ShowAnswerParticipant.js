@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router';
 
 import { SocketContext } from './Contexts/SocketContext';
 import { QuizContext } from './Contexts/QuizContext';
@@ -26,6 +27,7 @@ const useStyles = makeStyles({
 
 export default function ShowAnswerParticipant() {
   const classes = useStyles();
+  const history = useHistory();
   const { socket } = useContext(SocketContext);
   const { pin } = useContext(QuizContext);
 
@@ -46,6 +48,10 @@ export default function ShowAnswerParticipant() {
         setWrong(true);
         setBackgroundColor('#770000');
       }
+    });
+
+    socket.on('loadNextQuestionView', () => {
+      history.replace('/nextQuestion');
     });
   }, [socket, pin]);
 
