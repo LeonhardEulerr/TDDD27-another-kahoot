@@ -22,6 +22,7 @@ const {
   getUsersAnswer,
   addAnswerToScoreboard,
   getScoreboard,
+  removeAllAnswers,
 } = require('./quizzes');
 
 module.exports.server = function (app) {
@@ -77,7 +78,8 @@ module.exports.server = function (app) {
     });
 
     socket.on('loadNextQuestionView', ({ pin, indexQuestion }, callback) => {
-      //console.log(io.sockets.adapter.rooms.get(pin));
+      removeAllAnswers(pin);
+      setQuestionTimeout(pin, false);
       setQuizQuestionIndex(pin, indexQuestion);
       socket.broadcast.to(pin).emit('loadNextQuestionView', {});
       callback({ success: true });
@@ -132,7 +134,7 @@ module.exports.server = function (app) {
     );
 
     socket.on('timeout', ({ pin }, callback) => {
-      setQuestionTimeout(pin);
+      setQuestionTimeout(pin, true);
       socket.broadcast.to(pin).emit('timeout', {});
       callback({ success: 'Timeout successfully sent' });
     });

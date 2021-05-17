@@ -79,10 +79,10 @@ const removeQuiz = (pin) => {
   }
 };
 
-const setQuestionTimeout = (pin) => {
+const setQuestionTimeout = (pin, value) => {
   const quiz = quizzes.find((quiz) => quiz.pin === pin);
   if (quiz) {
-    quiz.questionTimeout = true;
+    quiz.questionTimeout = value;
   }
 };
 
@@ -199,4 +199,5 @@ module.exports = {
   getUsersAnswer,
   addAnswerToScoreboard,
   getScoreboard,
+  removeAllAnswers,
 };
