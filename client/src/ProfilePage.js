@@ -2,7 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router';
 import axios from 'axios';
 
-import { Box, Button, Divider, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  CssBaseline,
+  Divider,
+  Typography,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -18,25 +24,24 @@ const api = axios.create({
 const useStyles = makeStyles({
   container: {
     padding: '0em',
-    width: '100vw',
-    height: '100vh',
+    minWidth: '100vw',
+    minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
   },
   quizContainer: {
     padding: '0.5em',
     display: 'flex',
-    width: '80vw',
+    minWidth: '80vw',
     alignSelf: 'center',
     alignItems: 'center',
   },
   buttonContainer: {
     display: 'flex',
-    minWidth: '20%',
+    minWidth: '15vw',
     marginLeft: 'auto',
     padding: '1em',
     justifyContent: 'space-around',
-    hieght: '100%',
   },
 });
 
@@ -126,13 +131,23 @@ export default function ProfilePage() {
       });
   };
 
+  const backToMainPage = () => {
+    history.push('/');
+  };
+
   return (
     <Box className={classes.container}>
+      <CssBaseline />
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={backToMainPage}
+      >{`< Back to main`}</Button>
       {quizes.map((quiz, i) => {
         return (
           <React.Fragment key={i}>
             <Box className={classes.quizContainer}>
-              <Typography style={{ marginLeft: '2vw' }} variant="h5">
+              <Typography style={{ marginLeft: '1em' }} variant="h5">
                 {quiz.name}
               </Typography>
 
