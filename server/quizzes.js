@@ -48,21 +48,27 @@ const setQuizQuestionIndex = (pin, i) => {
 
 const getNextQuestion = (pin) => {
   const quiz = quizzes.find((quiz) => quiz.pin === pin);
-  const i = quiz.questionIndex;
-  const question = {
-    answerA: quiz.quiz.questions[i].answerA,
-    answerB: quiz.quiz.questions[i].answerB,
-    answerC: quiz.quiz.questions[i].answerC,
-    answerD: quiz.quiz.questions[i].answerD,
-  };
+  if (quiz) {
+    const i = quiz.questionIndex;
+    const question = {
+      answerA: quiz.quiz.questions[i].answerA,
+      answerB: quiz.quiz.questions[i].answerB,
+      answerC: quiz.quiz.questions[i].answerC,
+      answerD: quiz.quiz.questions[i].answerD,
+    };
 
-  return question;
+    return question;
+  }
+
+  return { error: 'Coudnt not fetch a question' };
 };
 
 const getNextQuestionHost = (pin) => {
   const quiz = quizzes.find((quiz) => quiz.pin === pin);
-  const i = quiz.questionIndex;
-  return quiz.quiz.questions[i];
+  if (quiz) {
+    const i = quiz.questionIndex;
+    return quiz.quiz.questions[i];
+  }
 };
 
 const removeQuiz = (pin) => {
@@ -151,6 +157,7 @@ const getUsersAnswer = (socketid, pin) => {
       return { answer: 'timeout' };
     }
   }
+  return { error: 'Could not fetch answer' };
 };
 
 const addAnswerToScoreboard = (name, pin, answer) => {

@@ -95,8 +95,8 @@ module.exports.server = function (app) {
     socket.on('getNextQuestionParticipant', ({ pin }, callback) => {
       const question = getNextQuestion(pin);
       const user = getUser(socket.id);
-      const { score, error } = getUserScore(pin, user.name);
-      console.log(score);
+      const { score, error } = getUserScore(pin, user ? user.name : null);
+
       if (question && user && score !== undefined) {
         callback({ question, name: user.name, score: score });
       }
@@ -138,7 +138,10 @@ module.exports.server = function (app) {
     });
 
     socket.on('correctAnswer', ({ pin }, callback) => {
-      const { answer } = getUsersAnswer(socket.id, pin);
+      const { error, answer } = getUsersAnswer(socket.id, pin);
+      if (error) {
+        return callback(error);
+      }
       callback(answer);
     });
 
