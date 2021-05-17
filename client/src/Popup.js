@@ -42,7 +42,14 @@ export default function Popup(props) {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent dividers>{msg}</DialogContent>
+      <DialogContent dividers>
+        <Typography
+          variant="h4"
+          style={{ paddingLeft: '1em', paddingRight: '1em' }}
+        >
+          {msg}
+        </Typography>
+      </DialogContent>
     </Dialog>
   );
 }
