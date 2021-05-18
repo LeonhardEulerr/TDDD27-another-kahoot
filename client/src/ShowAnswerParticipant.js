@@ -53,7 +53,11 @@ export default function ShowAnswerParticipant() {
     socket.on('loadNextQuestionView', () => {
       history.replace('/nextQuestion');
     });
-  }, [socket, pin]);
+
+    socket.on('kick', () => {
+      history.replace('/');
+    });
+  }, [socket, pin, history]);
 
   return (
     <Container

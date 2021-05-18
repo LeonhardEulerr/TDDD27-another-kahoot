@@ -40,7 +40,11 @@ export default function WaitForAnswerParticipantView() {
     socket.on('timeout', () => {
       history.replace('/answer');
     });
-  }, [socket]);
+
+    socket.on('kick', () => {
+      history.replace('/');
+    });
+  }, [socket, history]);
 
   return (
     <Container className={classes.container}>

@@ -41,6 +41,10 @@ export default function LobbyParticipant() {
     socket.on('loadNextQuestionView', () => {
       history.replace('/nextQuestion');
     });
+
+    socket.on('kick', () => {
+      history.replace('/');
+    });
   });
 
   return (

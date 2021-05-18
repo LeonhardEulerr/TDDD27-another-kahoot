@@ -62,6 +62,10 @@ export default function NextQuestion() {
     socket.on('timeout', () => {
       history.replace('/answer');
     });
+
+    socket.on('kick', () => {
+      history.replace('/');
+    });
   }, [history, pin, socket]);
 
   const submitAnswer = () => {
@@ -75,7 +79,6 @@ export default function NextQuestion() {
         answerD: toggleD,
       },
       (_res) => {
-        console.log('Change view to wait for stats');
         history.replace('/wait');
       }
     );
