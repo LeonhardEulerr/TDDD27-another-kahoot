@@ -69,6 +69,9 @@ export default function MainPage() {
   const history = useHistory();
 
   useEffect(() => {
+    localStorage.removeItem('pin');
+    localStorage.removeItem('name');
+
     async function fetchData() {
       setIsLoggedIn(await validate());
     }
