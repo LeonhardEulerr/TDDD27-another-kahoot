@@ -43,16 +43,17 @@ export default function HostLobby() {
 
   const [users, setUsers] = useState([]);
 
-  const { pin } = useContext(QuizContext);
   const { socket } = useContext(SocketContext);
+  const { pin, setIndexQuestion } = useContext(QuizContext);
 
   useEffect(() => {
     socket.on('newUser', ({ name }) => {
       setUsers((users) => [...users, name]);
     });
 
+    console.log(pin);
     socket.emit('joinHost', { pin }, (res) => {
-      console.log(res);
+      localStorage.setItem('name', 'host');
     });
 
     return () => {
@@ -62,6 +63,9 @@ export default function HostLobby() {
 
   const startQuiz = () => {
     console.log('starting a quiz');
+    setIndexQuestion(0);
+    localStorage.setItem('index', 0);
+
     socket.emit(
       'loadNextQuestionView',
       { pin, indexQuestion: 0 },
