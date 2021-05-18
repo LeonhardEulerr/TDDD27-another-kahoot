@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import JoinPage from './JoinPage';
 import MainPage from './MainPage';
 import LobbyParticipant from './LobbyParticipant';
@@ -40,7 +40,6 @@ function App() {
 
   useEffect(() => {
     retrieveLocalStorage();
-
     if (localStorage.getItem('name')) {
       if (localStorage.getItem('name') == 'host') {
         history.replace('/');
