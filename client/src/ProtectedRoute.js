@@ -10,10 +10,18 @@ export default function ProtectedRoute({ component: Component, ...rest }) {
   const [isAuth, setIsAuth] = useState(undefined);
 
   useEffect(() => {
-    async function fetchData() {
-      setIsAuth(await validate());
+    let isMounted = true;
+    if (isMounted) {
+      async function fetchData() {
+        validate().then((data) => {
+          if (isMounted) setIsAuth(data);
+        });
+      }
+      fetchData();
     }
-    fetchData();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const validate = async () => {
