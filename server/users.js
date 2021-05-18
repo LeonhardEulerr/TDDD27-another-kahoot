@@ -15,11 +15,34 @@ const addUser = ({ id, name, pin }) => {
   return { user };
 };
 
+// if multiple users with the same socket id exists all will be rmeoved
 const removeUser = (id) => {
-  const index = users.findIndex((user) => user.id === id);
+  const players = users.filter((u) => u.id === id);
+  players.forEach((p) => {
+    const index = users.findIndex((user) => user.id === p.id);
 
-  if (index !== -1) {
-    return users.splice(index, 1)[0];
+    if (index !== -1) {
+      return users.splice(index, 1)[0];
+    }
+  });
+};
+
+// remove all players except for host from a room with pin
+const removeAllPlayersInQuiz = (pin) => {
+  const players = users.filter((u) => u.pin === pin && u.name !== 'host');
+  players.forEach((p) => {
+    const index = users.findIndex((user) => user.id === p.id);
+
+    if (index !== -1) {
+      return users.splice(index, 1)[0];
+    }
+  });
+};
+
+const updateUserSocketId = ({ socketid, pin, name }) => {
+  let user = users.find((u) => u.pin === pin && u.name === name);
+  if (user) {
+    user.id = socketid;
   }
 };
 
@@ -38,7 +61,9 @@ const getUsersInQuiz = (pin) => {
 module.exports = {
   addUser,
   removeUser,
+  updateUserSocketId,
   getUser,
   getUserByNameAndPin,
   getUsersInQuiz,
+  removeAllPlayersInQuiz,
 };
