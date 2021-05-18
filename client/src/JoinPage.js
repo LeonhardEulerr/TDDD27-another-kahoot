@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router';
 import axios from 'axios';
 
@@ -6,6 +6,7 @@ import { Box, Button, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import { SocketContext } from './Contexts/SocketContext';
 import { QuizContext } from './Contexts/QuizContext';
+import Popup from './Popup';
 
 const api = axios.create({
   baseURL: `http://localhost:3000/api/`,
@@ -44,6 +45,14 @@ export default function JoinPage() {
   const { setPin } = useContext(QuizContext);
 
   const [localPin, setLocalPin] = useState('');
+  const [openPopup, setOpenPopup] = useState(false);
+  const [msg, setMsg] = useState('');
+
+  useEffect(() => {
+    socket.on('kick', () => {
+      history.replace('/');
+    });
+  }, [socket, history]);
 
   const getQuizWithPin = (p) => {
     console.log(p);
@@ -56,9 +65,13 @@ export default function JoinPage() {
           { pin: p, name },
           ({ success, error }) => {
             if (success) {
+              localStorage.setItem('name', name);
+              localStorage.setItem('pin', p);
               history.replace('/lobby');
             } else {
               console.log(error);
+              setMsg(error);
+              setOpenPopup(true);
             }
           }
         );
@@ -94,6 +107,12 @@ export default function JoinPage() {
           Join
         </Button>
       </form>
+      <Popup
+        openPopup={openPopup}
+        setOpenPopup={setOpenPopup}
+        title=""
+        msg={msg}
+      ></Popup>
     </Box>
   );
 }
