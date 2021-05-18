@@ -92,6 +92,8 @@ export default function FinishQuiz() {
   }, [socket, pin]);
 
   const finishQuiz = () => {
+    localStorage.removeItem('pin');
+    socket.emit('kickAll');
     history.replace('/');
     //disconnect all users
   };
