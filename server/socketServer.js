@@ -5,8 +5,9 @@ const {
   addUser,
   removeUser,
   getUser,
+  updateUserSocketId,
   getUserByNameAndPin,
-  getUsersInQuiz,
+  removeAllPlayersInQuiz,
 } = require('./users');
 
 const {
@@ -23,6 +24,7 @@ const {
   addAnswerToScoreboard,
   getScoreboard,
   removeAllAnswers,
+  updateUserAnswerInQuiz,
 } = require('./quizzes');
 
 module.exports.server = function (app) {
@@ -31,6 +33,13 @@ module.exports.server = function (app) {
 
   io.on('connection', (socket) => {
     console.log('New user connected', socket.id);
+
+    socket.on('rejoin', ({ pin, name }, _callback) => {
+      console.log('ID', socket.id);
+      updateUserSocketId({ socketid: socket.id, pin, name });
+      updateUserAnswerInQuiz({ socketid: socket.id, pin, name });
+      socket.join(pin);
+    });
 
     socket.on('joinHost', ({ pin }, callback) => {
       const { error, user } = addUser({
@@ -109,7 +118,6 @@ module.exports.server = function (app) {
     socket.on(
       'submitAnswer',
       ({ pin, answerA, answerB, answerC, answerD }, callback) => {
-        console.log(answerA, answerB, answerC, answerD);
         const user = getUser(socket.id);
         // submit answer to quiz answers object
         const answer = {
@@ -155,8 +163,16 @@ module.exports.server = function (app) {
       callback({ scoreboard });
     });
 
-    socket.on('message', ({ message }) => {
-      console.log(message);
+    socket.on('kickAll', () => {
+      const user = getUser(socket.id);
+
+      if (user && user.name === 'host') {
+        removeQuiz(user.pin);
+        socket.to(user.pin).emit('kick');
+
+        removeAllPlayersInQuiz(user.pin);
+        removeUser(user.id);
+      }
     });
 
     socket.on('disconnect', () => {
@@ -166,10 +182,18 @@ module.exports.server = function (app) {
       if (user && user.name === 'host') {
         console.log('removing host');
         removeQuiz(user.pin);
-      }
+        removeAllPlayersInQuiz(user.pin);
+        removeUser(user.id);
+        socket.to(user.pin).emit('kick');
 
-      // remove all the users from the started quiz and redirect them to start page
-      removeUser(socket.id);
+        // const ids = io.sockets.adapter.rooms.get(user.pin);
+        // if (ids) {
+        //   ids.forEach((id) => {
+        //     removeUser(id);
+        //     io.sockets.sockets.get(id).disconnect();
+        //   });
+        // }
+      }
     });
   });
   return server;
