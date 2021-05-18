@@ -109,6 +109,7 @@ export default function StatsPage() {
       { pin, indexQuestion: indexQuestion + 1 },
       ({ success, error }) => {
         if (success) {
+          localStorage.setItem('index', indexQuestion + 1);
           setIndexQuestion((indexQuestion) => indexQuestion + 1);
           history.replace('/question');
         } else {
@@ -120,6 +121,7 @@ export default function StatsPage() {
 
   const finishQuiz = () => {
     setIndexQuestion(0);
+    localStorage.setItem('index', 0);
     history.replace('/endquiz');
   };
 
