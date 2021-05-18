@@ -30,6 +30,17 @@ const addUserToQuiz = (pin, name) => {
   }
 };
 
+const updateUserAnswerInQuiz = ({ socketid, pin, name }) => {
+  let quiz = quizzes.find((q) => q.pin === pin);
+  if (quiz) {
+    let answerIndex = quiz.answers.findIndex((answer) => answer.name === name);
+
+    if (answerIndex !== -1) {
+      quiz.answers[answerIndex].socketid = socketid;
+    }
+  }
+};
+
 const getUserScore = (pin, name) => {
   const quiz = quizzes.find((q) => q.pin === pin);
   if (quiz) {
@@ -43,7 +54,9 @@ const getUserScore = (pin, name) => {
 
 const setQuizQuestionIndex = (pin, i) => {
   const index = quizzes.findIndex((quiz) => quiz.pin === pin);
-  quizzes[index].questionIndex = i;
+  if (index !== -1) {
+    quizzes[index].questionIndex = i;
+  }
 };
 
 const getNextQuestion = (pin) => {
@@ -84,10 +97,6 @@ const setQuestionTimeout = (pin, value) => {
   if (quiz) {
     quiz.questionTimeout = value;
   }
-};
-
-const isQuestionTimedOut = (pin) => {
-  return;
 };
 
 const isAnswerCorrect = (pin, userAnswer) => {
@@ -140,7 +149,6 @@ const addUserAnswer = ({
     answer,
   };
   quiz.answers.push(result);
-  console.log(quiz.answers);
 
   return { success: 'Answer added' };
 };
@@ -200,4 +208,5 @@ module.exports = {
   addAnswerToScoreboard,
   getScoreboard,
   removeAllAnswers,
+  updateUserAnswerInQuiz,
 };
