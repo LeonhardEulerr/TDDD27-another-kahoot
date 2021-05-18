@@ -110,16 +110,16 @@ export default function ProfilePage() {
         }
       )
       .then((res) => {
-        // redirect to lobby in order to wait for users to join
         setPin(res.data.quiz.pin);
-        console.log('PIN', res.data.quiz.pin);
+        localStorage.setItem('pin', res.data.quiz.pin);
+
         socket.emit(
           'addQuiz',
           { pin: res.data.quiz.pin, quiz: quizes[i] },
           ({ success, error }) => {
             if (success) {
               setQuiz(quizes[i]);
-              history.push('hostLobby');
+              history.replace('/hostLobby');
             } else {
               console.log(error);
             }
