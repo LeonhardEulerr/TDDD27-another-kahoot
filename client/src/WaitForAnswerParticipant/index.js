@@ -1,9 +1,8 @@
 import React, { useEffect, useContext } from 'react';
 import { useHistory } from 'react-router';
 
-import { SocketContext } from './Contexts/SocketContext';
+import { SocketContext } from '../Contexts/SocketContext';
 import {
-  makeStyles,
   Container,
   CssBaseline,
   Box,
@@ -11,25 +10,7 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 
-const useStyles = makeStyles({
-  container: {
-    padding: '0em',
-    minWidth: '100vw',
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  textIconContainer: {
-    margin: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  loadingIcon: {
-    marginTop: '2em',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-});
+import { useStyles } from './styles';
 
 export default function WaitForAnswerParticipantView() {
   const classes = useStyles();

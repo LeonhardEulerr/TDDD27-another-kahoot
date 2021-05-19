@@ -1,29 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router';
 
-import { SocketContext } from './Contexts/SocketContext';
-import { QuizContext } from './Contexts/QuizContext';
-import {
-  makeStyles,
-  Container,
-  CssBaseline,
-  Typography,
-} from '@material-ui/core';
+import { SocketContext } from '../Contexts/SocketContext';
+import { QuizContext } from '../Contexts/QuizContext';
+import { Container, CssBaseline, Typography } from '@material-ui/core';
 
-const useStyles = makeStyles({
-  container: {
-    padding: '0em',
-    minWidth: '100vw',
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  text: {
-    margin: 'auto',
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-});
+import { useStyles } from './styles';
 
 export default function ShowAnswerParticipant() {
   const classes = useStyles();

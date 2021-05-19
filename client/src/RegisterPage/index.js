@@ -3,35 +3,12 @@ import { TextField, Box, Button } from '@material-ui/core';
 
 import { useHistory } from 'react-router';
 
-import Popup from './Popup';
-import { makeStyles } from '@material-ui/core';
+import Popup from '../Popup';
 import axios from 'axios';
+import { useStyles } from './styles';
 
 const api = axios.create({
   baseURL: `http://localhost:3000/api/`,
-});
-
-const useStyles = makeStyles({
-  container: {
-    padding: '0em',
-    minWidth: '100vw',
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  form: {
-    margin: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  pinField: {
-    margin: 'auto',
-  },
-  button: {
-    marginTop: '0.5em',
-    minWidth: '120px',
-    height: '4vh',
-  },
 });
 
 export default function RegisterPage() {

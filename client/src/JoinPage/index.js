@@ -3,36 +3,14 @@ import { useHistory } from 'react-router';
 import axios from 'axios';
 
 import { Box, Button, TextField } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core';
-import { SocketContext } from './Contexts/SocketContext';
-import { QuizContext } from './Contexts/QuizContext';
-import Popup from './Popup';
+import { SocketContext } from '../Contexts/SocketContext';
+import { QuizContext } from '../Contexts/QuizContext';
+import Popup from '../Popup';
+
+import { useStyles } from './styles';
 
 const api = axios.create({
   baseURL: `http://localhost:3000/api/`,
-});
-
-const useStyles = makeStyles({
-  container: {
-    padding: '0em',
-    minWidth: '100vw',
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  form: {
-    margin: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  pinField: {
-    margin: 'auto',
-  },
-  button: {
-    marginTop: '0.5em',
-    minWidth: '120px',
-    height: '4vh',
-  },
 });
 
 export default function JoinPage() {

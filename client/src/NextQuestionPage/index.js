@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router';
 
-import { SocketContext } from './Contexts/SocketContext';
-import { QuizContext } from './Contexts/QuizContext';
+import { SocketContext } from '../Contexts/SocketContext';
+import { QuizContext } from '../Contexts/QuizContext';
 import {
-  makeStyles,
   Container,
   CssBaseline,
   Box,
@@ -12,23 +11,7 @@ import {
   Typography,
 } from '@material-ui/core';
 
-const useStyles = makeStyles({
-  container: {
-    padding: '0em',
-    minWidth: '100vw',
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  button: {
-    width: '40vw',
-    height: '40vh',
-    margin: '0.5vh',
-    fontSize: '20vh',
-    color: '#DDDDDD',
-    fontWeight: 'bold',
-  },
-});
+import { useStyles } from './styles';
 
 export default function NextQuestion() {
   const classes = useStyles();

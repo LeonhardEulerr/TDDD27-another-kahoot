@@ -1,28 +1,30 @@
+// react
 import React, { useEffect, useState } from 'react';
-
 import { Switch, Route } from 'react-router-dom';
+
+// routes
 import JoinPage from './JoinPage';
 import MainPage from './MainPage';
-import LobbyParticipant from './LobbyParticipant';
-import ProtectedRoute from './ProtectedRoute';
+import LobbyParticipant from './LobbyParticipantPage';
 import CreateQuizPage from './CreateQuizPage';
 import ProfilePage from './ProfilePage';
+import NextQuestion from './NextQuestionPage';
+import QuestionPage from './QuestionPage';
+import StatsPage from './StatsPage';
+import WaitForAnswerParticipantView from './WaitForAnswerParticipant';
+import ShowAnswerParticipant from './ShowAnswerParticipantPage';
+import FinishQuiz from './FinishQuizPage';
+import RegisterPage from './RegisterPage';
+import HostLobby from './HostLobbyPage';
 
-import history from './history';
+// utils
+import history from './utils/history';
+import ProtectedRoute from './utils/ProtectedRoute';
+import socket from './utils/socketCfg';
 
 // Contexts
 import { SocketContext } from './Contexts/SocketContext';
 import { QuizContext } from './Contexts/QuizContext';
-import HostLobby from './HostLobby';
-
-import socket from './socketCfg';
-import NextQuestion from './NextQuestion';
-import QuestionPage from './QuestionPage';
-import StatsPage from './StatsPage';
-import WaitForAnswerParticipantView from './WaitForAnswerParticipantView';
-import ShowAnswerParticipant from './ShowAnswerParticipant';
-import FinishQuiz from './FinishQuiz';
-import RegisterPage from './RegisterPage';
 
 function App() {
   const [pin, setPin] = useState('');
@@ -41,7 +43,7 @@ function App() {
   useEffect(() => {
     retrieveLocalStorage();
     if (localStorage.getItem('name')) {
-      if (localStorage.getItem('name') == 'host') {
+      if (localStorage.getItem('name') === 'host') {
         history.replace('/');
       }
     }

@@ -9,40 +9,17 @@ import {
   Divider,
   Typography,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
-import { SocketContext } from './Contexts/SocketContext';
-import { QuizContext } from './Contexts/QuizContext';
+import { SocketContext } from '../Contexts/SocketContext';
+import { QuizContext } from '../Contexts/QuizContext';
+
+import { useStyles } from './styles';
 
 const api = axios.create({
   baseURL: `http://localhost:3000/api/`,
-});
-
-const useStyles = makeStyles({
-  container: {
-    padding: '0em',
-    minWidth: '100vw',
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  quizContainer: {
-    padding: '0.5em',
-    display: 'flex',
-    minWidth: '80vw',
-    alignSelf: 'center',
-    alignItems: 'center',
-  },
-  buttonContainer: {
-    display: 'flex',
-    minWidth: '15vw',
-    marginLeft: 'auto',
-    padding: '1em',
-    justifyContent: 'space-around',
-  },
 });
 
 export default function ProfilePage() {

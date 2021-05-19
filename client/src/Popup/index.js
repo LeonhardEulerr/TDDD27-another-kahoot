@@ -1,6 +1,5 @@
 import React from 'react';
 import CloseIcon from '@material-ui/icons/Close';
-import { makeStyles } from '@material-ui/core';
 import {
   Dialog,
   DialogContent,
@@ -9,16 +8,7 @@ import {
   IconButton,
 } from '@material-ui/core';
 
-const useStyles = makeStyles({
-  dTitle: {
-    height: '25px',
-  },
-  closeButton: {
-    position: 'absolute',
-    right: 1,
-    top: 5,
-  },
-});
+import { useStyles } from './styles';
 
 export default function Popup(props) {
   const classes = useStyles();
