@@ -1,6 +1,7 @@
+// react
 import React, { useState, useContext, useEffect } from 'react';
-import { useHistory } from 'react-router';
 
+// material-ui
 import {
   Container,
   Typography,
@@ -10,14 +11,19 @@ import {
   Divider,
   Button,
 } from '@material-ui/core';
+
+// contexts
 import { QuizContext } from '../Contexts/QuizContext';
 import { SocketContext } from '../Contexts/SocketContext';
 
+// utils
+import history from '../utils/history';
+
+// styles
 import { useStyles } from './styles';
 
 export default function HostLobby() {
   const classes = useStyles();
-  const history = useHistory();
 
   const [users, setUsers] = useState([]);
 

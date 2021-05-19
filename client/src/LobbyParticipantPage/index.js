@@ -1,5 +1,7 @@
+// react
 import React, { useEffect, useContext } from 'react';
-import { useHistory } from 'react-router';
+
+// material-ui
 import {
   Box,
   Container,
@@ -7,13 +9,18 @@ import {
   Typography,
   CircularProgress,
 } from '@material-ui/core';
-import { useStyles } from './styles';
 
+// contexts
 import { SocketContext } from '../Contexts/SocketContext';
+
+// utils
+import history from '../utils/history';
+
+// styles
+import { useStyles } from './styles';
 
 export default function LobbyParticipant() {
   const classes = useStyles();
-  const history = useHistory();
 
   const { socket } = useContext(SocketContext);
 

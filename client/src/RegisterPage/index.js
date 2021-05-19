@@ -1,19 +1,21 @@
+// react
 import React, { useState } from 'react';
+
+// material-ui
 import { TextField, Box, Button } from '@material-ui/core';
 
-import { useHistory } from 'react-router';
-
+// components
 import Popup from '../Popup';
-import axios from 'axios';
-import { useStyles } from './styles';
 
-const api = axios.create({
-  baseURL: `http://localhost:3000/api/`,
-});
+// utils
+import history from '../utils/history';
+import { api } from '../utils/api';
+
+// styles
+import { useStyles } from './styles';
 
 export default function RegisterPage() {
   const classes = useStyles();
-  const history = useHistory();
 
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');

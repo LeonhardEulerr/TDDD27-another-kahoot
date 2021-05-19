@@ -1,7 +1,7 @@
+// react
 import React, { useEffect, useContext } from 'react';
-import { useHistory } from 'react-router';
 
-import { SocketContext } from '../Contexts/SocketContext';
+// material-ui
 import {
   Container,
   CssBaseline,
@@ -10,11 +10,18 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 
+// contexts
+import { SocketContext } from '../Contexts/SocketContext';
+
+// utils
+import history from '../utils/history';
+
+// styles
 import { useStyles } from './styles';
 
 export default function WaitForAnswerParticipantView() {
   const classes = useStyles();
-  const history = useHistory();
+
   const { socket } = useContext(SocketContext);
 
   useEffect(() => {

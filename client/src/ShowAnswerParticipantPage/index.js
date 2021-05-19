@@ -1,15 +1,22 @@
+// react
 import React, { useState, useEffect, useContext } from 'react';
-import { useHistory } from 'react-router';
 
-import { SocketContext } from '../Contexts/SocketContext';
-import { QuizContext } from '../Contexts/QuizContext';
+// material-ui
 import { Container, CssBaseline, Typography } from '@material-ui/core';
 
+// contexts
+import { SocketContext } from '../Contexts/SocketContext';
+import { QuizContext } from '../Contexts/QuizContext';
+
+// utils
+import history from '../utils/history';
+
+// styles
 import { useStyles } from './styles';
 
 export default function ShowAnswerParticipant() {
   const classes = useStyles();
-  const history = useHistory();
+
   const { socket } = useContext(SocketContext);
   const { pin } = useContext(QuizContext);
 

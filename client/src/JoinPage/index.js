@@ -1,27 +1,30 @@
+// react
 import React, { useEffect, useState, useContext } from 'react';
-import { useHistory } from 'react-router';
-import axios from 'axios';
 
+// material-ui
 import { Box, Button, TextField } from '@material-ui/core';
-import { SocketContext } from '../Contexts/SocketContext';
-import { QuizContext } from '../Contexts/QuizContext';
+
+// components
 import Popup from '../Popup';
 
-import { useStyles } from './styles';
+// contexts
+import { SocketContext } from '../Contexts/SocketContext';
+import { QuizContext } from '../Contexts/QuizContext';
 
-const api = axios.create({
-  baseURL: `http://localhost:3000/api/`,
-});
+// utils
+import history from '../utils/history';
+import { api } from '../utils/api';
+
+// styles
+import { useStyles } from './styles';
 
 export default function JoinPage() {
   const classes = useStyles();
-  const history = useHistory();
-
-  const [name, setName] = useState('');
 
   const { socket } = useContext(SocketContext);
   const { setPin } = useContext(QuizContext);
 
+  const [name, setName] = useState('');
   const [localPin, setLocalPin] = useState('');
   const [openPopup, setOpenPopup] = useState(false);
   const [msg, setMsg] = useState('');

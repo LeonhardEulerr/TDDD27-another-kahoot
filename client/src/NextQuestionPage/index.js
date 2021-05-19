@@ -1,8 +1,7 @@
+// react
 import React, { useState, useEffect, useContext } from 'react';
-import { useHistory } from 'react-router';
 
-import { SocketContext } from '../Contexts/SocketContext';
-import { QuizContext } from '../Contexts/QuizContext';
+// material-ui
 import {
   Container,
   CssBaseline,
@@ -11,11 +10,18 @@ import {
   Typography,
 } from '@material-ui/core';
 
+// utils
+import history from '../utils/history';
+
+// contexts
+import { SocketContext } from '../Contexts/SocketContext';
+import { QuizContext } from '../Contexts/QuizContext';
+
+// styles
 import { useStyles } from './styles';
 
 export default function NextQuestion() {
   const classes = useStyles();
-  const history = useHistory();
   const { socket } = useContext(SocketContext);
   const { pin } = useContext(QuizContext);
 

@@ -1,6 +1,8 @@
+// react
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router';
-import axios from 'axios';
+import { useParams } from 'react-router';
+
+// material-ui
 import {
   Box,
   Button,
@@ -9,19 +11,19 @@ import {
   Divider,
   TextField,
   Checkbox,
+  Fab,
 } from '@material-ui/core';
-
-import { useStyles } from './styles';
 import AddIcon from '@material-ui/icons/Add';
-import Fab from '@material-ui/core/Fab';
 
-const api = axios.create({
-  baseURL: `http://localhost:3000/api/`,
-});
+// utils
+import history from '../utils/history';
+import { api } from '../utils/api';
+
+// styles
+import { useStyles } from './styles';
 
 export default function CreateQuizPage() {
   const classes = useStyles();
-  const history = useHistory();
   const { id } = useParams();
 
   const [name, setName] = useState('');

@@ -1,10 +1,9 @@
+// react
 import React, { useEffect, useState } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import axios from 'axios';
 
-const api = axios.create({
-  baseURL: `http://localhost:3000/api/`,
-});
+// utils
+import { api } from '../utils/api';
 
 export default function ProtectedRoute({ component: Component, ...rest }) {
   const [isAuth, setIsAuth] = useState(undefined);

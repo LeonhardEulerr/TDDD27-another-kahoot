@@ -1,5 +1,7 @@
+// react
 import React from 'react';
-import CloseIcon from '@material-ui/icons/Close';
+
+// material-ui
 import {
   Dialog,
   DialogContent,
@@ -7,7 +9,9 @@ import {
   Typography,
   IconButton,
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 
+// styles
 import { useStyles } from './styles';
 
 export default function Popup(props) {

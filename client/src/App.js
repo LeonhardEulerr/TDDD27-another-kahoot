@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-// routes
+// components
 import JoinPage from './JoinPage';
 import MainPage from './MainPage';
 import LobbyParticipant from './LobbyParticipantPage';

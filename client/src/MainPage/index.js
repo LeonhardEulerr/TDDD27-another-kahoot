@@ -1,5 +1,7 @@
+// react
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+
+// material-ui
 import {
   Box,
   Button,
@@ -11,24 +13,25 @@ import {
   TextField,
 } from '@material-ui/core';
 
+// components
 import Popup from '../Popup';
-import { useHistory } from 'react-router';
-import { useStyles } from './styles';
 
-const api = axios.create({
-  baseURL: `http://localhost:3000/api/`,
-});
+// utils
+import { api } from '../utils/api';
+import history from '../utils/history';
+
+// styles
+import { useStyles } from './styles';
 
 export default function MainPage() {
   const classes = useStyles();
+
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [openPopup, setOpenPopup] = useState(false);
   const [msg, setMsg] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [switchLogin, setSwitchLogin] = useState(false);
-
-  const history = useHistory();
 
   useEffect(() => {
     localStorage.removeItem('pin');

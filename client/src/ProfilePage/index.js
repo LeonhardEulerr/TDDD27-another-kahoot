@@ -1,7 +1,7 @@
+// react
 import React, { useState, useEffect, useContext } from 'react';
-import { useHistory } from 'react-router';
-import axios from 'axios';
 
+// material-ui
 import {
   Box,
   Button,
@@ -13,18 +13,19 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
+// contexts
 import { SocketContext } from '../Contexts/SocketContext';
 import { QuizContext } from '../Contexts/QuizContext';
 
-import { useStyles } from './styles';
+// utils
+import history from '../utils/history';
+import { api } from '../utils/api';
 
-const api = axios.create({
-  baseURL: `http://localhost:3000/api/`,
-});
+// styles
+import { useStyles } from './styles';
 
 export default function ProfilePage() {
   const classes = useStyles();
-  const history = useHistory();
 
   const { setPin, setQuiz } = useContext(QuizContext);
   const { socket } = useContext(SocketContext);
