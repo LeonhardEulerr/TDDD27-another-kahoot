@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const validate = (req, res, next) => {
   // middleware will not come here if user wasnt authenticated
@@ -34,7 +35,7 @@ const register = (req, res, next) => {
     user
       .save()
       .then((user) => {
-        let token = jwt.sign({ login: user.login }, 'verySecret', {
+        let token = jwt.sign({ login: user.login }, process.env.SECRET_JWT, {
           expiresIn: '8h',
         });
         res.status(200).json({
@@ -63,7 +64,7 @@ const login = (req, res, next) => {
           });
         }
         if (result) {
-          let token = jwt.sign({ login: user.login }, 'verySecret', {
+          let token = jwt.sign({ login: user.login }, process.env.SECRET_JWT, {
             expiresIn: '8h',
           });
           res.status(200).json({
