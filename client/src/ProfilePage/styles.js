@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
   container: {
+    flex: 1,
     padding: '0em',
     minWidth: '100vw',
     minHeight: '100vh',

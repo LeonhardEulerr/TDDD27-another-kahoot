@@ -26,7 +26,6 @@ const useStyles = makeStyles({
   },
   answerBox: {
     display: 'flex',
-    //margin: 'auto',
     alignSelf: 'center',
     width: '80vw',
     height: '20vh',
