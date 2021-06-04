@@ -109,6 +109,10 @@ export default function ProfilePage() {
       });
   };
 
+  const createQuiz = () => {
+    history.push('/create');
+  };
+
   const backToMainPage = () => {
     history.push('/');
   };
@@ -121,53 +125,72 @@ export default function ProfilePage() {
         color="primary"
         onClick={backToMainPage}
       >{`< Back to main`}</Button>
-      {quizes.map((quiz, i) => {
-        return (
-          <React.Fragment key={i}>
-            <Box className={classes.quizContainer}>
-              <Typography style={{ marginLeft: '1em' }} variant="h5">
-                {quiz.name}
-              </Typography>
+      <Box
+        className={classes.listQuizes}
+        style={{
+          flex: 1,
+          overflowY: 'auto',
+        }}
+      >
+        {quizes.map((quiz, i) => {
+          return (
+            <React.Fragment key={i}>
+              <Box className={classes.quizContainer}>
+                <Typography style={{ marginLeft: '1em' }} variant="h5">
+                  {quiz.name}
+                </Typography>
 
-              <Box className={classes.buttonContainer}>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={() => {
-                    editQuiz(quiz._id);
-                  }}
-                >
-                  <EditIcon size="large" />
-                </Button>
+                <Box className={classes.buttonContainer}>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={() => {
+                      editQuiz(quiz._id);
+                    }}
+                  >
+                    <EditIcon size="large" />
+                  </Button>
 
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  onClick={() => {
-                    deleteQuiz(i);
-                  }}
-                >
-                  <DeleteIcon size="large" />
-                </Button>
+                  <Button
+                    color="secondary"
+                    variant="contained"
+                    onClick={() => {
+                      deleteQuiz(i);
+                    }}
+                  >
+                    <DeleteIcon size="large" />
+                  </Button>
 
-                <Button
-                  style={{ backgroundColor: '#00CC22' }}
-                  color="secondary"
-                  variant="contained"
-                  onClick={() => {
-                    startQuiz(quiz._id, i);
-                  }}
-                >
-                  <PlayArrowIcon size="large" />
-                </Button>
+                  <Button
+                    style={{ backgroundColor: '#00CC22' }}
+                    color="secondary"
+                    variant="contained"
+                    onClick={() => {
+                      startQuiz(quiz._id, i);
+                    }}
+                  >
+                    <PlayArrowIcon size="large" />
+                  </Button>
+                </Box>
               </Box>
-            </Box>
-            <Divider
-              style={{ width: '80vw', marginLeft: 'auto', marginRight: 'auto' }}
-            />
-          </React.Fragment>
-        );
-      })}
+              <Divider
+                style={{
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                }}
+              />
+            </React.Fragment>
+          );
+        })}
+      </Box>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={createQuiz}
+        style={{ marginTop: '1em' }}
+      >
+        CREATE
+      </Button>
     </Box>
   );
 }
