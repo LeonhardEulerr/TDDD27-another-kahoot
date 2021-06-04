@@ -1,3 +1,11 @@
+# Project screencast
+
+[`Link to project screencast`](https://liuonline-my.sharepoint.com/:v:/g/personal/dawab699_student_liu_se/Edx9UsZ9ym9Cj6rm_ORLHS0BfVLowDvSgaggEwm_hRnMpQ?e=u9fKTg)
+
+# Code oral defense screencast
+
+[`Link to code oral defense screencast`](https://liuonline-my.sharepoint.com/:v:/g/personal/dawab699_student_liu_se/Ed-BRtBtz2VKozNwYlT-GdMBjSR0bM7rnimNR91DoV54PQ?e=fKAkRY)
+
 # Midcourse screencast
 
 [`Link to midcourse screencast`](https://liuonline-my.sharepoint.com/:v:/g/personal/dawab699_student_liu_se/EQhrtOhanb5GlVOWbewelm0BRGEQzM_KrAvW9OlYMn2IIQ?e=XmXxev)
