@@ -12,7 +12,7 @@ const validate = (req, res, next) => {
       });
     } else {
       res.status(400).json({
-        message: 'Nop user found!',
+        message: 'No user found!',
       });
     }
   });
